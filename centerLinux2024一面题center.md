@@ -41,7 +41,7 @@ int main() {
 
 - <font color=black size=5>`printf`函数的返回值：`printf`函数的返回值是其成功输出的字符个数，而非输出内容本身；若输出空字符串（`""`），返回值为0</font>
 
-- <font color=black size=5>`unsigned int`[^5]的取值范围：无符号整数仅存储非负整数（0 ~ 4294967295），不存在负数。当`a=0`时执行`a--`，会溢出为最大值`4294967295`，而非`-1`，循环会无限执行下去，这是因为无符号整数遵循**模运算规则**[^6],`unsigned`（无符号）类型的模运算核心规则是 “结果恒为非负''</font>
+- <font color=black size=5>`unsigned int`[^1]的取值范围：无符号整数仅存储非负整数（0 ~ 4294967295），不存在负数。当`a=0`时执行`a--`，会溢出为最大值`4294967295`，而非`-1`，循环会无限执行下去，这是因为无符号整数遵循**模运算规则**[^2],`unsigned`（无符号）类型的模运算核心规则是 “结果恒为非负''</font>
 
 - <font color=black size=5>最内层`printf`输出空字符串，返回0,中间层`printf`输出字符串`Hi guys ! Join Linux - 20`共21个字符，返回21,最外层`printf`输出21并换行。</font>
 
@@ -79,7 +79,7 @@ int main() {
 
 <font color=black size=5>• `p0`与`p1`：`p0`是数组（存字符串内容），`p1`是指针（存字符串常量地址），`sizeof`结果因类型不同而不同，`strlen`因有效内容相同而相等</font>
 
-<font color=black size=5>• `strcmp`[^7](p0, p1)：`strcmp`比较到字符串结束符`\0`为止，`p0`和`p1`的有效内容（`"I love Linux"`）完全相同，故返回`0`</font>
+<font color=black size=5>• `strcmp`[^3](p0, p1)：`strcmp`比较到字符串结束符`\0`为止，`p0`和`p1`的有效内容（`"I love Linux"`）完全相同，故返回`0`</font>
 
 <font color=black size=5>• `strcmp(p0, p2)`：`p2`末尾的`\0`是字符串默认结束符，与`p0`的有效内容一致，比较结果为0</font>
 
@@ -673,7 +673,7 @@ int main() {
 
 <font color=black size=6>一、计算`Node`结构体的大小</font>
 
-<font color=black size=5>需考虑内存对齐规则[^1]</font>
+<font color=black size=5>需考虑内存对齐规则[^4]</font>
 
 <font color=black size=6>1. 分析`Node`结构体的成员</font>
 
@@ -685,7 +685,7 @@ int main() {
 
 - <font color=black size=5>**void (*change)( struct node *n)**：函数指针占8字节，对齐系数为8</font>
 
-- <font color=black size=5>**`char string[0]`**：柔性数组[^2]，不占用结构体本身的内存空间，用于后续动态扩展</font>
+- <font color=black size=5>**`char string[0]`**：柔性数组[^5]，不占用结构体本身的内存空间，用于后续动态扩展</font>
 
 <font color=black size=6>2. 按内存对齐规则计算结构体总大小</font>
 
@@ -701,7 +701,7 @@ int main() {
 
 - <font color=black size=5>**动态内存分配**：</font>
 
-<font color=black size=5>`malloc(sizeof(Node) + (strlen(s) + 1) * sizeof(char))` [^3]分配的内存包括：`Node`结构体本身 + 字符串`s`的长度（为柔性数组分配空间）</font>
+<font color=black size=5>`malloc(sizeof(Node) + (strlen(s) + 1) * sizeof(char))` [^6]分配的内存包括：`Node`结构体本身 + 字符串`s`的长度（为柔性数组分配空间）</font>
 
 - <font color=black size=5>**字符串复制**：</font>
 
@@ -711,7 +711,7 @@ int main() {
 
 - <font color=black size=5>**函数调用与字符串转换**：</font>
 
-​	<font color=black size=5>`P->change(P)` 调用`func`函数，遍历`string`中的每个字符，通过`tolower`[^4]将大写字母转换为小写字母</font>
+​	<font color=black size=5>`P->change(P)` 调用`func`函数，遍历`string`中的每个字符，通过`tolower`[^7]将大写字母转换为小写字母</font>
 
 ### <font color=black size=6>答案</font>
 
