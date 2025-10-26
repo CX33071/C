@@ -41,7 +41,7 @@ int main() {
 
 - <font color=black size=5>`printf`函数的返回值：`printf`函数的返回值是其成功输出的字符个数，而非输出内容本身；若输出空字符串（`""`），返回值为0</font>
 
-- <font color=black size=5>`unsigned int`[^5]的取值范围：无符号整数仅存储非负整数（0 ~ 4294967295），不存在负数。当`a=0`时执行`a--`，会溢出为最大值`4294967295`，而非`-1`，循环会无限执行下去，这是因为无符号整数遵循**模运算规则**[^6],`unsigned`（无符号）类型的模运算核心规则是 “结果恒为非负''</font>
+- <font color=black size=5>`unsigned int`[^1]的取值范围：无符号整数仅存储非负整数（0 ~ 4294967295），不存在负数。当`a=0`时执行`a--`，会溢出为最大值`4294967295`，而非`-1`，循环会无限执行下去，这是因为无符号整数遵循**模运算规则**[^2],`unsigned`（无符号）类型的模运算核心规则是 “结果恒为非负''</font>
 
 - <font color=black size=5>最内层`printf`输出空字符串，返回0,中间层`printf`输出字符串`Hi guys ! Join Linux - 20`共21个字符，返回21,最外层`printf`输出21并换行。</font>
 
@@ -79,7 +79,7 @@ int main() {
 
 <font color=black size=5>• `p0`与`p1`：`p0`是数组（存字符串内容），`p1`是指针（存字符串常量地址），`sizeof`结果因类型不同而不同，`strlen`因有效内容相同而相等</font>
 
-<font color=black size=5>• `strcmp`[^7](p0, p1)：`strcmp`比较到字符串结束符`\0`为止，`p0`和`p1`的有效内容（`"I love Linux"`）完全相同，故返回`0`</font>
+<font color=black size=5>• `strcmp`[^3](p0, p1)：`strcmp`比较到字符串结束符`\0`为止，`p0`和`p1`的有效内容（`"I love Linux"`）完全相同，故返回`0`</font>
 
 <font color=black size=5>• `strcmp(p0, p2)`：`p2`末尾的`\0`是字符串默认结束符，与`p0`的有效内容一致，比较结果为0</font>
 
@@ -673,7 +673,7 @@ int main() {
 
 <font color=black size=6>一、计算`Node`结构体的大小</font>
 
-<font color=black size=5>需考虑内存对齐规则[^1]</font>
+<font color=black size=5>需考虑内存对齐规则[^4]</font>
 
 <font color=black size=6>1. 分析`Node`结构体的成员</font>
 
@@ -685,7 +685,7 @@ int main() {
 
 - <font color=black size=5>**void (*change)( struct node *n)**：函数指针占8字节，对齐系数为8</font>
 
-- <font color=black size=5>**`char string[0]`**：柔性数组[^2]，不占用结构体本身的内存空间，用于后续动态扩展</font>
+- <font color=black size=5>**`char string[0]`**：柔性数组[^5]，不占用结构体本身的内存空间，用于后续动态扩展</font>
 
 <font color=black size=6>2. 按内存对齐规则计算结构体总大小</font>
 
@@ -701,7 +701,7 @@ int main() {
 
 - <font color=black size=5>**动态内存分配**：</font>
 
-<font color=black size=5>`malloc(sizeof(Node) + (strlen(s) + 1) * sizeof(char))` [^3]分配的内存包括：`Node`结构体本身 + 字符串`s`的长度（为柔性数组分配空间）</font>
+<font color=black size=5>`malloc(sizeof(Node) + (strlen(s) + 1) * sizeof(char))` [^6]分配的内存包括：`Node`结构体本身 + 字符串`s`的长度（为柔性数组分配空间）</font>
 
 - <font color=black size=5>**字符串复制**：</font>
 
@@ -711,7 +711,7 @@ int main() {
 
 - <font color=black size=5>**函数调用与字符串转换**：</font>
 
-​	<font color=black size=5>`P->change(P)` 调用`func`函数，遍历`string`中的每个字符，通过`tolower`[^4]将大写字母转换为小写字母</font>
+​	<font color=black size=5>`P->change(P)` 调用`func`函数，遍历`string`中的每个字符，通过`tolower`[^7]将大写字母转换为小写字母</font>
 
 ### <font color=black size=6>答案</font>
 
@@ -754,35 +754,16 @@ welcome to xiyoulinux_group!
 - <font color=black size=5>**用户与组**：Linux 是多用户系统，通过 `useradd`/`usermod`/`userdel` 管理用户，`groupadd` 等管理组，权限隔离严格。</font>
 - <font color=black size=5>**包管理**：不同发行版（如 Ubuntu 用 `apt`，CentOS 用 `yum`/`dnf`）通过包管理器安装 / 更新软件，替代手动编译。</font>
 - <font color=black size=5>**进程管理**：`ps` 查看进程，`kill` 终止进程，`top`/`htop` 实时监控系统资源。</font>
-
-[^1]:
-
-<font color=CornflowerBlue size=5>**基本对齐单位**</font>
-
-<font color=black size=5>每个数据类型有默认的 “对齐系数”（通常等于其自身大小，如`char`为 1 字节，`int`为 4 字节，`double`为 8 字节等），可通过`#pragma pack(n)`手动指定对齐系数（`n`为 2 的幂，如 1、2、4、8），此时实际对齐系数为数据类型自身大小与`n`的较小值</font>
-
-<font color=CornflowerBlue size=5>成员对齐规则</font>
-
-<font color=black size=5>结构体 / 联合体中，每个成员的起始地址相对于结构体首地址的偏移量，必须是该成员 “对齐系数” 的整数倍,若前一个成员占用的内存未满足当前成员的对齐要求，会自动填充空白字节</font>
-
-<font color=CornflowerBlue size=5>整体对齐规则</font>
-
-<font color=black size=5>结构体 / 联合体的总大小，必须是其所有成员中最大对齐系数的整数倍,若总大小不满足，会在末尾填充空白字节</font>
-
-[^2]:<font color=CornflowerBlue size=5>主要作用是动态扩展结构体的内存空间，不占用结构体本身的内存，必须放到结构体的最后，动态分配结构体内存时必须包含柔性数组的内存</font>
-[^3]:<font color=CornflowerBlue size=5>`malloc` 是 C 语言标准库 `<stdlib.h>` 中用于动态分配内存的函数，允许程序在运行时根据需要申请内存空间，常用于处理大小不确定的数据,如字符串。动态数组，结构体</font>
-[^4]:<font color=CornflowerBlue size=5>tolower` 是 C 语言标准库 `<ctype.h>` 中的一个函数，用于将大写字母转换为对应的小写字母，非字母字符则保持不变</font>
-[^5]:<font color=CornflowerBlue size=5>unsigned:`unsigned` 是 C 语言中的**无符号类型修饰符**，用于修饰整数类型（如 `int`、`char`、`long` 等），表示该类型的变量**只存储非负整数**（取值范围从 0 开始），没有符号位（正负之分）</font>
-
-<font color=CornflowerBlue size=5>扩展非负整数的取值范围计算机中整数的存储会占用固定位数（如 `int` 通常占 4 字节 = 32 位），其中 1 位默认作为 “符号位”（0 表示正数，1 表示负数），剩下的位存储数值。`unsigned` 会 “取消符号位”，让所有位都用于存储数值，因此： 无符号类型的最小值固定为 0； 最大值比对应的有符号类型大一倍（所有位都存数值）</font>
-
- <font color=CornflowerBlue size=5>以 4 字节 `int` 和 `unsigned int` 为例，取值范围对比：</font>
-
-| 数据类型                 | 取值范围                 | 关键原因                                                |
+[^1]:<font color=CornflowerBlue size=5>unsigned:`unsigned` 是 C 语言中的**无符号类型修饰符**，用于修饰整数类型（如 `int`、`char`、`long` 等），表示该类型的变量**只存储非负整数**（取值范围从 0 开始），没有符号位（正负之分）扩展非负整数的取值范围计算机中整数的存储会占用固定位数（如 `int` 通常占 4 字节 = 32 位），其中 1 位默认作为 “符号位”（0 表示正数，1 表示负数），剩下的位存储数值。`unsigned` 会 “取消符号位”，让所有位都用于存储数值，因此： 无符号类型的最小值固定为 0； 最大值比对应的有符号类型大一倍（所有位都存数值）以 4 字节 `int` 和 `unsigned int` 为例，取值范围对比：| 数据类型                 | 取值范围                 | 关键原因                                                |
 | ------------------------ | ------------------------ | ------------------------------------------------------- |
 | `int`（有符号）          | -2147483648 ~ 2147483647 | 1 位符号位（0 表正、1 表负）+ 31 位数值位，采用补码存储 |
-| `unsigned int`（无符号） | 0 ~ 4294967295           | 32 位全部用于存储数值（无符号位），仅表示非负整数       |
+| `unsigned int`（无符号） | 0 ~ 4294967295           | 32 位全部用于存储数值（无符号位），仅表示非负整数       |</font>
+[^2]:<font color=CornflowerBlue size=5>unsigned 模运算本质是无符号数的取余运算，结果始终为 非负整数，结果非负性：无论被除数正负（若实际传入负数，会先转为无符号数），结果均 ≥ 0 且 < |m|</font>
+[^3]: <font color=CornflowerBlue size=5>`strcmp`是字符串处理函数，用来比较两个字符串的内容，通过比较字符串的ASCII码来实现相等返回 0，不相等返回非 0 值(`a > b`返回正，`a < b`返回负）</font>
+[^4]:<font color=CornflowerBlue size=5>**内存对齐规则**每个数据类型有默认的 “对齐系数”（通常等于其自身大小，如`char`为 1 字节，`int`为 4 字节，`double`为 8 字节等），可通过`#pragma pack(n)`手动指定对齐系数（`n`为 2 的幂，如 1、2、4、8），此时实际对齐系数为数据类型自身大小与`n`的较小值。成员对齐规则：结构体 / 联合体中，每个成员的起始地址相对于结构体首地址的偏移量，必须是该成员 “对齐系数” 的整数倍,若前一个成员占用的内存未满足当前成员的对齐要求，会自动填充空白字节。整体对齐规则：结构体 / 联合体的总大小，必须是其所有成员中最大对齐系数的整数倍,若总大小不满足，会在末尾填充空白字节</font>
+[^5]:<font color=CornflowerBlue size=5>主要作用是动态扩展结构体的内存空间，不占用结构体本身的内存，必须放到结构体的最后，动态分配结构体内存时必须包含柔性数组的内存</font>
+[^6]:<font color=CornflowerBlue size=5>`malloc` 是 C 语言标准库 `<stdlib.h>` 中用于动态分配内存的函数，允许程序在运行时根据需要申请内存空间，常用于处理大小不确定的数据,如字符串。动态数组，结构体</font>
+[^7]:<font color=CornflowerBlue size=5>tolower` 是 C 语言标准库 `<ctype.h>` 中的一个函数，用于将大写字母转换为对应的小写字母，非字母字符则保持不变</font>
 
-[^6]:<font color=CornflowerBlue size=5>unsigned 模运算本质是无符号数的取余运算，结果始终为 非负整数，结果非负性：无论被除数正负（若实际传入负数，会先转为无符号数），结果均 ≥ 0 且 < |m|</font>
 
-[^7]: <font color=CornflowerBlue size=5>`strcmp`是字符串处理函数，用来比较两个字符串的内容，通过比较字符串的ASCII码来实现相等返回 0，不相等返回非 0 值(`a > b`返回正，`a < b`返回负）</font>
+
