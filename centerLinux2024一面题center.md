@@ -755,7 +755,7 @@ welcome to xiyoulinux_group!
 - <font color=black size=5>**包管理**：不同发行版（如 Ubuntu 用 `apt`，CentOS 用 `yum`/`dnf`）通过包管理器安装 / 更新软件，替代手动编译。</font>
 - <font color=black size=5>**进程管理**：`ps` 查看进程，`kill` 终止进程，`top`/`htop` 实时监控系统资源。</font>
 
-[^1]:
+[^4]:
 
 <font color=CornflowerBlue size=5>**基本对齐单位**</font>
 
@@ -769,10 +769,10 @@ welcome to xiyoulinux_group!
 
 <font color=black size=5>结构体 / 联合体的总大小，必须是其所有成员中最大对齐系数的整数倍,若总大小不满足，会在末尾填充空白字节</font>
 
-[^2]:<font color=CornflowerBlue size=5>主要作用是动态扩展结构体的内存空间，不占用结构体本身的内存，必须放到结构体的最后，动态分配结构体内存时必须包含柔性数组的内存</font>
-[^3]:<font color=CornflowerBlue size=5>`malloc` 是 C 语言标准库 `<stdlib.h>` 中用于动态分配内存的函数，允许程序在运行时根据需要申请内存空间，常用于处理大小不确定的数据,如字符串。动态数组，结构体</font>
-[^4]:<font color=CornflowerBlue size=5>tolower` 是 C 语言标准库 `<ctype.h>` 中的一个函数，用于将大写字母转换为对应的小写字母，非字母字符则保持不变</font>
-[^5]:<font color=CornflowerBlue size=5>unsigned:`unsigned` 是 C 语言中的**无符号类型修饰符**，用于修饰整数类型（如 `int`、`char`、`long` 等），表示该类型的变量**只存储非负整数**（取值范围从 0 开始），没有符号位（正负之分）</font>
+[^5]:<font color=CornflowerBlue size=5>主要作用是动态扩展结构体的内存空间，不占用结构体本身的内存，必须放到结构体的最后，动态分配结构体内存时必须包含柔性数组的内存</font>
+[^6]:<font color=CornflowerBlue size=5>`malloc` 是 C 语言标准库 `<stdlib.h>` 中用于动态分配内存的函数，允许程序在运行时根据需要申请内存空间，常用于处理大小不确定的数据,如字符串。动态数组，结构体</font>
+[^7]:<font color=CornflowerBlue size=5>tolower` 是 C 语言标准库 `<ctype.h>` 中的一个函数，用于将大写字母转换为对应的小写字母，非字母字符则保持不变</font>
+[^1]:<font color=CornflowerBlue size=5>unsigned:`unsigned` 是 C 语言中的**无符号类型修饰符**，用于修饰整数类型（如 `int`、`char`、`long` 等），表示该类型的变量**只存储非负整数**（取值范围从 0 开始），没有符号位（正负之分）</font>
 
 <font color=CornflowerBlue size=5>扩展非负整数的取值范围计算机中整数的存储会占用固定位数（如 `int` 通常占 4 字节 = 32 位），其中 1 位默认作为 “符号位”（0 表示正数，1 表示负数），剩下的位存储数值。`unsigned` 会 “取消符号位”，让所有位都用于存储数值，因此： 无符号类型的最小值固定为 0； 最大值比对应的有符号类型大一倍（所有位都存数值）</font>
 
@@ -783,6 +783,6 @@ welcome to xiyoulinux_group!
 | `int`（有符号）          | -2147483648 ~ 2147483647 | 1 位符号位（0 表正、1 表负）+ 31 位数值位，采用补码存储 |
 | `unsigned int`（无符号） | 0 ~ 4294967295           | 32 位全部用于存储数值（无符号位），仅表示非负整数       |
 
-[^6]:<font color=CornflowerBlue size=5>unsigned 模运算本质是无符号数的取余运算，结果始终为 非负整数，结果非负性：无论被除数正负（若实际传入负数，会先转为无符号数），结果均 ≥ 0 且 < |m|</font>
+[^2]:<font color=CornflowerBlue size=5>unsigned 模运算本质是无符号数的取余运算，结果始终为 非负整数，结果非负性：无论被除数正负（若实际传入负数，会先转为无符号数），结果均 ≥ 0 且 < |m|</font>
 
-[^7]: <font color=CornflowerBlue size=5>`strcmp`是字符串处理函数，用来比较两个字符串的内容，通过比较字符串的ASCII码来实现相等返回 0，不相等返回非 0 值(`a > b`返回正，`a < b`返回负）</font>
+[^3]: <font color=CornflowerBlue size=5>`strcmp`是字符串处理函数，用来比较两个字符串的内容，通过比较字符串的ASCII码来实现相等返回 0，不相等返回非 0 值(`a > b`返回正，`a < b`返回负）</font>
