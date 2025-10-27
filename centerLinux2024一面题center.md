@@ -12,11 +12,11 @@
 
 ### <font color=black size=6>解析</font>
 
-1. <font color=black size=5>100根香蕉超单次搬运上限（50根），得先往返搬一段路，把香蕉变少；</font>
+<font color=black size=5>1.100根香蕉超单次搬运上限（50根），得先往返搬一段路，把香蕉变少；</font>
 
-2. <font color=black size=5>每往返1米要吃3根（去1根、回1根、再去1根），搬17米后，吃了51根，剩49根（刚好≤50根，不用再往返）；</font>
+<font color=black size=5>2.每往返1米要吃3根（去1根、回1根、再去1根），搬17米后，吃了51根，剩49根（刚好≤50根，不用再往返）；</font>
 
-3. <font color=black size=5>剩下50-17=33米，单次搬49根，每米吃1根，到家剩49-33=16根</font>
+<font color=black size=5>3.剩下50-17=33米，单次搬49根，每米吃1根，到家剩49-33=16根</font>
 
 ## <font color=CornflowerBlue size=6>1.西邮Linux欢迎你啊</font>
 
@@ -43,9 +43,9 @@ int main() {
 
 - <font color=black size=5>`unsigned int`[^1]的取值范围：无符号整数仅存储非负整数（0 ~ 4294967295），不存在负数。当`a=0`时执行`a--`，会溢出为最大值`4294967295`，而非`-1`，循环会无限执行下去，这是因为无符号整数遵循**模运算规则**[^2],`unsigned`（无符号）类型的模运算核心规则是 “结果恒为非负''</font>
 
-- <font color=black size=5>最内层`printf`输出空字符串，返回0,中间层`printf`输出字符串`Hi guys ! Join Linux - 20`共21个字符，返回21,最外层`printf`输出21并换行。</font>
+- <font color=black size=5>最内层`printf`输出空字符串，返回0,中间层`printf`输出字符串`Hi guys ! Join Linux - 20`共24个字符，返回24,最外层`printf`输出24并换行。</font>
 
-  <font color=black size=5>单次循环最终输出`Hi guys ! Join Linux - 2021`,循环会无限次输出这行代码</font>
+  <font color=black size=5>单次循环最终输出`Hi guys ! Join Linux - 2024`,循环会无限次输出这行代码</font>
 
 ## <font color=CornflowerBlue size=6>2.眼见不一定为实</font>
 
@@ -75,15 +75,11 @@ int main() {
 
 <font color=black size=5>**代码分析**</font>
 
-<font color=black size=5>• `p0`与`p2`：均为字符数组，`p2`手动加`\0`，`p0`由编译器自动添加，二者`strlen`和`strcmp`结果一致，`sizeof(p0)` = `sizeof(p2)` = 13，尽管`p2`手动输入显式`\0`,此时编译器不会额外添加隐式`\0`</font>
-
-<font color=black size=5>• `p0`与`p1`：`p0`是数组（存字符串内容），`p1`是指针（存字符串常量地址），`sizeof`结果因类型不同而不同，`strlen`因有效内容相同而相等</font>
-
 <font color=black size=5>• `strcmp`[^3](p0, p1)：`strcmp`比较到字符串结束符`\0`为止，`p0`和`p1`的有效内容（`"I love Linux"`）完全相同，故返回`0`</font>
 
 <font color=black size=5>• `strcmp(p0, p2)`：`p2`末尾的`\0`是字符串默认结束符，与`p0`的有效内容一致，比较结果为0</font>
 
-<font color=black size=5>• `sizeof(p0) == sizeof(p1)`：`p0`是字符数组，`sizeof`计算数组总字节数（含默认`\0`，共13字节）；`p1`是指针，`sizeof`计算指针大小（32位系统4字节，64位系统8字节），两者不相等,结果为0</font>
+<font color=black size=5>• `sizeof(p0) == sizeof(p1)`：`p0`是字符数组，`sizeof`计算数组总字节数，含隐式`\0`，共13字节；`p1`是指针，`sizeof`计算指针大小（32位系统4字节，64位系统8字节），两者不相等,结果为0</font>
 
 <font color=black size=5>• `strlen(p0) == strlen(p1)`：`strlen`统计`\0`前的字符数，`p0`和`p1`的有效字符数均为12（`"I love Linux"`），长度相等，结果为1</font>
 
@@ -115,7 +111,7 @@ int main() {
 
 <font color=black size=5>**代码分析**</font>
 
-<font color=black size=5>`float`存储十进制小数，只有23位有效小数位转为二进制时会截断，`a`,`b`,`ex`三个数只能存储为近似值，最终输出`b - a == ex is false`，下面一行将浮点数放大10倍转为整数，无误差，最终输出`B - A == EX is true`</font>
+<font color=black size=5>`float`存储十进制小数，十进制小数转为二进制乘2取整，只有23位有效小数位，会截断，`a`,`b`,`ex`三个数只能存储为近似值，最终输出`b - a == ex is false`，下面一行将浮点数放大10倍转为整数，无误差，最终输出`B - A == EX is true`</font>
 
 <font color=black size=5>**如何避免**</font>
 
@@ -147,9 +143,9 @@ int average(int nums[], int start, int end) {
 
 ​	<font color=black size=5>• 将区间二分（`mid = (start+end)/2`），分别递归计算左半区间 [`start`, `mid`] 和右半区间 [`mid+1`, `end`] 的平均值（`leftAvg`、`rightAvg`），最后合并两个子区间的平均值得到原区间结果</font>
 
-<font color=black size=5>2.位运算合并平均值</font>
+<font color=black size=5>2.合并平均值</font>
 
-<font color=black size=5>原理：两个整数的平均值 = 两数共有的二进制位 + 两数不同的二进制位右移1位（即除以2）</font>
+<font color=black size=5>两个整数的平均值 = 两数共有的二进制位 + 两数不同的二进制位右移1位（即除以2）</font>
 
 <font color=black size=5>`leftAvg & rightAvg`：提取两数二进制中 都为1的位（这些位相加后除以2，结果仍为自身，无需改变）</font>
 
@@ -159,7 +155,7 @@ int average(int nums[], int start, int end) {
 
 <font color=black size=5>优点：</font>
 
-- </font><font color=black size=5>避免溢出：直接用 `(a+b)/2` 时，若 `a` 和 `b` 接近 `int` 最大值（如 `2^31-1`），`a+b` 会溢出为负数；位运算无需加法，无溢出风险</font>
+- </font><font color=black size=5>避免溢出：直接用 `(a+b)/2` 时，若 `a` 和 `b` 接近 `int` 最大值（如 `2^31-1`），`a+b` 会溢出为负数；</font>
 
 - <font color=black size=5>效率更高：位运算（`&`、`^`、`>>`）是CPU直接支持的底层操作，比加法+除法（除法需多周期）执行速度更快</font>
 
@@ -167,7 +163,7 @@ int average(int nums[], int start, int end) {
 
 <font color=black size=5>缺点：</font>
 
-- <font color=black size=5>仅适用于整数：位运算针对二进制位操作，无法直接用于浮点数平均值计算（需额外处理小数部分）</font>
+- <font color=black size=5>仅适用于整数：位运算针对二进制位操作，无法直接用于浮点数平均值计算，需额外处理小数部分</font>
 
 - <font color=black size=5>可读性差</font>
 
@@ -312,7 +308,7 @@ int main(int argc, char *argv[]) {
 
 <font color=black size=5>短路求值："||"左侧为真则右侧不执行，"&&"左侧为假则右侧不执行</font>
 
-<font color=black size=5>`argc`初始为1,`argc`后置自增，进入`while`循环，此时`b` = 2</font>
+<font color=black size=5>`argc`初始为1,`argc`后置自增，进入`while`循环，argc++一直大于0,出不去while循环，直到增到最大值2147483647,这时再自增，溢出为-2147483648,再判断一次while的条件，argc再自增1,退出while循环，此时b=-2147483647</font>
 
 <font color=black size=5>条件判断表达式拆解（`--a || b++ && c--`）</font>
 
@@ -325,25 +321,19 @@ int main(int argc, char *argv[]) {
 <font color=black size=5>2.分步计算</font>
 
 - <font color=black size=5>`--a`：前置自增，`a`从1变为0，表达式值为0（假）</font>
-
 - <font color=black size=5>因`||`左侧为假，需计算右侧`b++ && c--`：</font>
-
-- <font color=black size=5>`b++`：后置自增，表达式值为`b`的原始值（1或4），`b`自增1（变为2或5）</font>
-
-- <font color=black size=5>`c--`：后置自减，表达式值为`c`的原始值（0），`c`从0变为-1</font>
-
-- <font color=black size=5>`b++ && c--`：左侧为真（1或4非0），右侧为假（0），整体值为0（假）</font>
+- <font color=black size=5>`b++ && c--`：左侧为真（非0），右侧为假（0），整体值为0（假）</font>
 
 <font color=black size=5>最终表达式：`0 || 0 = 0`（假），因此`if`条件不成立</font>
 
-- <font color=black size=5>因`if`条件为假，`for`循环（遍历`argv`打印）不执行</font>
+- <font color=black size=5>因`if`条件为假，`for`循环（遍历`argv`打印）不执行，但b还是自增了1变成-2147483646</font>
 
-- <font color=black size=5>最终打印`a`（0）、`b`（自增后的值）、`c`（自减后的值）</font>
+- <font color=black size=5>最终打印`a`（0）、`b`、`c`</font>
 
 <font color=black size=5>**最终输出**</font>
 
 ```c
-a = 0, b = 2, c = -1
+a = 0, b = -2147483646, c = -1
 ```
 
 
@@ -754,10 +744,14 @@ welcome to xiyoulinux_group!
 - <font color=black size=5>**用户与组**：Linux 是多用户系统，通过 `useradd`/`usermod`/`userdel` 管理用户，`groupadd` 等管理组，权限隔离严格。</font>
 - <font color=black size=5>**包管理**：不同发行版（如 Ubuntu 用 `apt`，CentOS 用 `yum`/`dnf`）通过包管理器安装 / 更新软件，替代手动编译。</font>
 - <font color=black size=5>**进程管理**：`ps` 查看进程，`kill` 终止进程，`top`/`htop` 实时监控系统资源。</font>
-[^1]:<font color=CornflowerBlue size=5>unsigned:`unsigned` 是 C 语言中的**无符号类型修饰符**，用于修饰整数类型（如 `int`、`char`、`long` 等），表示该类型的变量**只存储非负整数**（取值范围从 0 开始），没有符号位（正负之分）扩展非负整数的取值范围计算机中整数的存储会占用固定位数（如 `int` 通常占 4 字节 = 32 位），其中 1 位默认作为 “符号位”（0 表示正数，1 表示负数），剩下的位存储数值。`unsigned` 会 “取消符号位”，让所有位都用于存储数值，因此： 无符号类型的最小值固定为 0； 最大值比对应的有符号类型大一倍（所有位都存数值）以 4 字节 `int` 和 `unsigned int` 为例，取值范围对比：| 数据类型                 | 取值范围                 | 关键原因                                                |
-| ------------------------ | ------------------------ | ------------------------------------------------------- |
-| `int`（有符号）          | -2147483648 ~ 2147483647 | 1 位符号位（0 表正、1 表负）+ 31 位数值位，采用补码存储 |
-| `unsigned int`（无符号） | 0 ~ 4294967295           | 32 位全部用于存储数值（无符号位），仅表示非负整数       |</font>
+[^1]:<font color=CornflowerBlue size=5>unsigned:`unsigned` 是 C 语言中的**无符号类型修饰符**，用于修饰整数类型（如 `int`、`char`、`long` 等），表示该类型的变量**只存储非负整数**（取值范围从 0 开始），没有符号位（正负之分）扩展非负整数的取值范围计算机中整数的存储会占用固定位数（如 `int` 通常占 4 字节 = 32 位），其中 1 位默认作为 “符号位”（0 表示正数，1 表示负数），剩下的位存储数值。`unsigned` 会 “取消符号位”，让所有位都用于存储数值，因此： 无符号类型的最小值固定为 0； 最大值比对应的有符号类型大一倍（所有位都存数值）以 4 字节 `int` 和 `unsigned int` 为例，取值范围对比：</font>
+[^1]:
+
+| 类型         | 范围                    | 原因                         |
+| ------------ | ----------------------- | ---------------------------- |
+| int          | -2147483648到2147483647 | 1位用来当符号位，31位数      |
+| unsigned int | 0到4294967295           | 32位全用来存储数值，无符号位 |
+
 [^2]:<font color=CornflowerBlue size=5>unsigned 模运算本质是无符号数的取余运算，结果始终为 非负整数，结果非负性：无论被除数正负（若实际传入负数，会先转为无符号数），结果均 ≥ 0 且 < |m|</font>
 [^3]: <font color=CornflowerBlue size=5>`strcmp`是字符串处理函数，用来比较两个字符串的内容，通过比较字符串的ASCII码来实现相等返回 0，不相等返回非 0 值(`a > b`返回正，`a < b`返回负）</font>
 [^4]:<font color=CornflowerBlue size=5>**内存对齐规则**每个数据类型有默认的 “对齐系数”（通常等于其自身大小，如`char`为 1 字节，`int`为 4 字节，`double`为 8 字节等），可通过`#pragma pack(n)`手动指定对齐系数（`n`为 2 的幂，如 1、2、4、8），此时实际对齐系数为数据类型自身大小与`n`的较小值。成员对齐规则：结构体 / 联合体中，每个成员的起始地址相对于结构体首地址的偏移量，必须是该成员 “对齐系数” 的整数倍,若前一个成员占用的内存未满足当前成员的对齐要求，会自动填充空白字节。整体对齐规则：结构体 / 联合体的总大小，必须是其所有成员中最大对齐系数的整数倍,若总大小不满足，会在末尾填充空白字节</font>
