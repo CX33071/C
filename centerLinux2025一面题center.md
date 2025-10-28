@@ -1,4 +1,4 @@
-个it# <center><font color=CornflowerBlue size=6>Linux2025一面题</font></center>
+# <center><font color=CornflowerBlue size=6>Linux2025一面题</font></center>
 
 [TOC]
 
@@ -75,7 +75,12 @@ int main() {
   - <font color=black size=5>步骤3：计算最外层的`printf`：将步骤2的返回值25代入`%d`，输出`25`并换行</font>
 
 - <font color=black size=5>最终输出结果</font>
-  <font color=black size=5>综合以上步骤，最终控制台输出为：`Hi guys! Welcome to Xiyou Linux 2025`</font>
+  
+  ```c
+  Hi guys! Welcome to Xiyou Linux 2025
+  ```
+  
+  
 
 #### <font color=CornflowerBlue size=6>2.可以和\0组一辈子字符串吗？</font>
 
@@ -553,6 +558,12 @@ int main(int argc) {
 
 <font color=black size=5>   当某次调用的`argc > 2000`时，返回0，结束</font>
 
+```c
+2 4 8 16 32 64 128 256 512 1024
+```
+
+
+
 #### <font color=CornflowerBlue size=6>10.拼接 排序 去重</font>
 
 <font color=black size=5>本题要求你编写以下函数，不能改动 `main` 函数里的代码。实现对 `arr1 `和` arr2` 的拼接、排序和去重。你需要自行定义` result `结构体并使用 `malloc `手动开辟内存。</font>
@@ -600,15 +611,15 @@ void Your_concat(int arr1[], int len1, int arr2[], int len2, struct result* resu
     result->len = len1 + len2;
     result->arr = (int*)malloc(result->len * sizeof(int));
     if (result->arr == NULL) {
-        // 内存分配失败处理（实际可增加报错逻辑）
+        // 内存分配失败处理
         result->len = 0;
         return;
     }
-    // 复制arr1元素
+    // 加入arr1元素
     for (int i = 0; i < len1; i++) {
         result->arr[i] = arr1[i];
     }
-    // 复制arr2元素
+    // 加入arr2元素
     for (int i = 0; i < len2; i++) {
         result->arr[len1 + i] = arr2[i];
     }
@@ -622,12 +633,10 @@ void Your_concat(int arr1[], int len1, int arr2[], int len2, struct result* resu
 
 ```c
 void Your_sort(struct result* result) {
-    if (result->len <= 1) return;  // 空数组或单元素无需排序
-    // 冒泡排序（升序）
+    if (result->len <= 1) return;  
     for (int i = 0; i < result->len - 1; i++) {
         for (int j = 0; j < result->len - 1 - i; j++) {
-            if (result->arr[j] > result->arr[j + 1]) {
-                // 交换元素
+            if (result->arr[j] > result->arr[j + 1]){
                 int temp = result->arr[j];
                 result->arr[j] = result->arr[j + 1];
                 result->arr[j + 1] = temp;
@@ -648,7 +657,7 @@ void Your_sort(struct result* result) {
 
 ```c
 void Your_dedup(struct result* result) {
-    if (result->len <= 1) return;  // 空数组或单元素无需去重
+    if (result->len <= 1) return;  
     // 统计不重复元素数量
     int new_len = 1;
     for (int i = 1; i < result->len; i++) {
@@ -656,14 +665,14 @@ void Your_dedup(struct result* result) {
             result->arr[new_len++] = result->arr[i];
         }
     }
-    // 重新分配内存（释放原内存并分配新内存，或使用realloc）
+    // 分配内存
     int* new_arr = (int*)malloc(new_len * sizeof(int));
     if (new_arr != NULL) {
         // 复制不重复元素到新数组
         for (int i = 0; i < new_len; i++) {
             new_arr[i] = result->arr[i];
         }
-        free(result->arr);  // 释放原内存
+        free(result->arr);  // 释放内存
         result->arr = new_arr;
         result->len = new_len;
     }
