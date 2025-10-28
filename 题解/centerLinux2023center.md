@@ -110,10 +110,10 @@ int main(void) {
 <font color=black size=5>1.`ptr0` 与 `ptr1` 的本质差异</font>
 
 <font color=black size=5>• `char *ptr0` = "字符串常量"：</font>
-<font color=black size=5>字符串常量存储在 只读数据区，`ptr0` 是指向该区域的指针（只读，不可修改内容）</font>
+<font color=black size=5>`ptr0`是指针，指向只读数据区中的字符串常量本身，不能通过指针修改内容</font>
 
 <font color=black size=5>• `char ptr1[]` = "字符串常量"：</font>
-<font color=black size=5>字符串常量被 拷贝到栈区，`ptr1` 是栈数组的首地址（可修改数组内容）</font>
+<font color=black size=5>字符串常量被视为初始化数据，在栈区分配一块字符数组，将字符串常量的内容复制到这个数组，作用仅是给数组`ptr1`提供初始值，`ptr1` 是栈数组的首地址，数组存储在可读写内存区</font>
 
 <font color=black size=5>• 两者指向 不同内存区域，因此 `ptr0 - ptr1` 是两个不同内存地址的差值（非0）</font>
 
@@ -164,11 +164,11 @@ int main(void) {
 <font color=black size=5>**逐步分析**</font>
 
 <font color=black size=5>1,`printf("%zu\t%zu\t%zu\n", sizeof(*&arr), sizeof(arr + 0), sizeof(num = num2 + 4))`</font>
-<font color=black size=5>• `sizeof(*&arr)` -> 7：</font><font color=black size=5>  `&arr` 取数组首地址,`*&arr` 解引用，等价于 `arr`,`sizeof(arr)` 计算数	组总字节数：7个`char` × 1字节 = 7</font>
+<font color=black size=5>• `sizeof(*&arr)` -> 7：</font><font color=black size=5>  `&arr` 取数组首地址,`*&arr` 解引用，等价于 `arr`,`sizeof(arr)` 计算数组总字节数：7个`char` × 1字节 = 7</font>
 
 <font color=black size=5>• `sizeof(arr + 0)` -> 8：`arr` 自动转换为数组首地址,为指针类型，64位系统中指针占8字节</font>
 
-<font color=black size=5>• `sizeof(num = num2 + 4)` -> 2：`sizeof` 仅计算表达式结果的类型大小，不执行赋值运算,表达式结果类型为 `short`（`num` 是`short`类型），`short`占2字节，与 	`num2+4` 的值无关</font>
+<font color=black size=5>• `sizeof(num = num2 + 4)` -> 2：`sizeof` 仅计算表达式结果的类型大小，不执行赋值运算,表达式结果类型为 `short`（`num` 是`short`类型），`short`占2字节，与 `num2+4` 的值无关</font>
 
 <font color=black size=5>2.`printf("%d\n", sprintf(str, "0x%x", num) == num)`</font>
 
@@ -200,7 +200,7 @@ int main(void) {
 
 <font color=black size=5>1.功能</font>
 
-<font color=black size=5>将格式化的数据写入字符数组（而非直接输出到屏幕，区别于 `printf`）</font>
+<font color=black size=5>将格式化的数据输出到字符数组（而非直接输出到屏幕，区别于 `printf`）</font>
 
 <font color=black size=5>2.参数（共3个及以上，可变参数）</font>
 <font color=black size=5>`int sprintf(char *str, const char *format, ...)`;</font>
@@ -273,11 +273,11 @@ int main(void) {
 
 <font color=black size=5>`64 + 63 - (-1) = 64 + 63 + 1 = 128`</font>
 
-<font color=black size=5>但 `char` 范围为 -128~127，128 超出范围，发生溢出：</font>
+<font color=black size=5>但 `char` 类型通常是8位有符号整数，范围为 -128~127，128 超出范围，发生溢出：</font>
 
-<font color=black size=5>128 的二进制表示为 `10000000`（8 位）。</font>
+<font color=black size=5>128 的无符号二进制表示为 `10000000`（8 位）。</font>
 
-<font color=black size=5>在 8 位有符号 `char` 中，最高位为符号位（1 表示负数），而 `10000000` 恰好是 `-128` 的补码（特殊值）</font>
+<font color=black size=5>在 8 位有符号 `char` 中，`10000000`被解读为有符号数的补码，最高位为符号位（1 表示负数），而 `10000000`  是特殊值，固定表示`-128` （补码范围中最小的负数，在 n 位补码中，最小负数的二进制形式均为 “1 后面跟 n-1 个 0”）</font>
 
 <font color=black size=5>**最终输出**</font>
 
@@ -316,10 +316,10 @@ int main(void) {
 <font color=black size=5>1.关键位运算的作用</font>
 
 ​	<font color=black size=5>• `a ^ b`（异或）：实现 无进位相加</font>
-​	<font color=black size=5>异或规则“相同为0，不同为1”，恰好对应二进制加法中“无进位时的结果”（如 `1^1=0 `对应 `1+1 `的无进位部分，`1^0=1` 对应 `1+0 `的结果）</font>
+​	<font color=black size=5>异或规则“相同为0，不同为1”，恰好对应二进制加法中“无进位时的结果”</font>
 
 <font color=black size=5>	• `(a & b) << 1`（与运算 + 左移1位）：计算 进位值</font>
-	<font color=black size=5>与运算规则“全1为1，否则为0”，只有 `1&1` 会产生进位，左移1位后得到该位的进位值（如 `1&1=1`，左移1位为 10，对应`1+1 `的进位 2）</font>
+	<font color=black size=5>与运算规则“全1为1，否则为0”，只有 `1&1` 会产生进位，左移1位后得到该位的进位值</font>
 
 <font color=black size=5>2.递归终止条件</font>
 
@@ -336,7 +336,7 @@ int main(void) {
 
 - <font color=black size=5>计算进位：`（a & b)<<1`</font>
 
-  <font color=black size=5>`a & b:00000000 00000000 00000000 00001001 & 11111111 11111111 11111111 11111001 = 00000000 00000000 00000000 00001001(18)`</font>
+  <font color=black size=5>`（a & b:00000000 00000000 00000000 00001001 & 11111111 11111111 11111111 11111001） = 00000000 00000000 00000000 00010010(18)`</font>
 
 - <font color=black size=5>计算无进位和：`a ^ b`</font>
 
@@ -361,7 +361,7 @@ int main(void) {
 ```c
 typedef int (*Predicate)(int);
 int *filter(int *array, int length, Predicate predicate,
-            int *resultLength); /*补全函数*/
+            int *resultLength); //返回值已用于返回新数组的地址，利用*resultLength指针参数间接传递新数组长度信息
 int isPositive(int num) { return num > 0; }
 int main(void) {
     int array[] = {-3, -2, -1, 0, 1, 2, 3, 4, 5, 6};
@@ -388,7 +388,7 @@ int main(void) {
 
 <font color=black size=5>为新数组分配内存，存储满足条件的元素；</font>
 
-<font color=black size=5>通过结果长度通过指针传出，返回新数组地址</font>
+<font color=black size=5>通过指针传出，返回新数组地址</font>
 
 
 ```c
@@ -396,7 +396,7 @@ typedef int (*Predicate)(int);
 // 过滤数组中满足条件的元素
 int *filter(int *array, int length, Predicate predicate, int *resultLength) {
     // 第一步：统计满足条件的元素个数
-    *resultLength = 0;
+    *resultLength = 0;//将0存入指针指向的内存地址，初始化
     for (int i = 0; i < length; i++) {
         if (predicate(array[i])) {  // 通过函数指针判断条件
             (*resultLength)++;
@@ -453,7 +453,7 @@ extern int g_val; // 错误：无法访问file1.c的静态全局变量
 
 <font color=black size=5>• 作用：</font>
 
-<font color=black size=5>◦ 生命周期延长为整个程序运行期间（默认局部变量存储在栈区，函数结束后销毁；静态局部变量存储在静态数据区，程序启动时初始化，结束时释放）；</font>
+<font color=black size=5>◦ 生命周期延长为整个程序运行期间（默认局部变量存储在栈区，函数结束后销毁，收回内存；静态局部变量存储在静态数据区，程序启动时初始化，结束时释放，不回收内存，保留上一次的值）；</font>
 
 <font color=black size=5>◦ 仅初始化一次（多次调用函数，不会重复初始化，保留上一次的值）；</font>
 
@@ -587,7 +587,7 @@ int main(int argc, char* argv[]) {
 
 - <font color=black size=5>`argc` 是命令行参数的个数（包含程序自身路径），程序直接运行时无额外参数，因此` argc=1`（仅程序名这1个参数），`printf` 输出 1</font>
 
-- <font color=black size=5>初始 `argc=1`，循环中 `++argc` 持续执行, 实际 `argc` 是 `int` 类型，递增到 `INT_MAX` 后溢出为 `INT_MIN`，最终 `argc=0` 时循环终止，最终 `argc=0`</font>
+- <font color=black size=5>初始 `argc=1`，循环中 `++argc` 持续执行, 实际 `argc` 是 `int`，增到最大后溢出，最终 `argc=0` 时循环终止，最终 `argc=0`</font>
   <font color=black size=5>`i=-1`, `j=argc=0`, `k=1`</font>
 
 - <font color=black size=5>`i++ && j++ || k++`</font>

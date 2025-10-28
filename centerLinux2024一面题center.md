@@ -41,7 +41,7 @@ int main() {
 
 - <font color=black size=5>`printf`函数的返回值：`printf`函数的返回值是其成功输出的字符个数，而非输出内容本身；若输出空字符串（`""`），返回值为0</font>
 
-- <font color=black size=5>`unsigned int`[^1]的取值范围：无符号整数仅存储非负整数（0 ~ 4294967295），不存在负数。当`a=0`时执行`a--`，会溢出为最大值`4294967295`，而非`-1`，循环会无限执行下去，这是因为无符号整数遵循**模运算规则**[^2],`unsigned`（无符号）类型的模运算核心规则是 “结果恒为非负''</font>
+- <font color=black size=5>`unsigned int`[^1]的取值范围：无符号整数仅存储非负整数（0 ~ 4294967295），不存在负数。当`a=0`时执行`a--`，会溢出为最大值`4294967295`，而非负数，循环会无限执行下去，这是因为无符号整数遵循**模运算规则**[^2],`unsigned`（无符号）类型的模运算核心规则是 “结果恒为非负''</font>
 
 - <font color=black size=5>最内层`printf`输出空字符串，返回0,中间层`printf`输出字符串`Hi guys ! Join Linux - 20`共24个字符，返回24,最外层`printf`输出24并换行。</font>
 
@@ -147,15 +147,15 @@ int average(int nums[], int start, int end) {
 
 <font color=black size=5>两个整数的平均值 = 两数共有的二进制位 + 两数不同的二进制位右移1位（即除以2）</font>
 
-<font color=black size=5>`leftAvg & rightAvg`：提取两数二进制中 都为1的位（这些位相加后除以2，结果仍为自身，无需改变）</font>
+<font color=black size=5>`leftAvg & rightAvg`：提取两数二进制中 都为1的位（这些位相加后会进位，除以2，对应`(a+b)/2`的整数部分）</font>
 
-<font color=black size=5>`leftAvg ^ rightAvg`：提取两数二进制中 不同的位（这些位相加后为1，除以2等价于右移1位）</font>
+<font color=black size=5>`leftAvg ^ rightAvg`：提取两数二进制中 不同的位（这些位相加后为1，右移1位等价于除以2）</font>
 
 <font color=black size=5>**位运算求平均值的优缺点**</font>
 
 <font color=black size=5>优点：</font>
 
-- </font><font color=black size=5>避免溢出：直接用 `(a+b)/2` 时，若 `a` 和 `b` 接近 `int` 最大值（如 `2^31-1`），`a+b` 会溢出为负数；</font>
+- <font color=black size=5>避免溢出：直接用 `(a+b)/2` 时，若 `a` 和 `b` 接近 `int` 最大值（如 `2^31-1`），`a+b` 会溢出为负数；</font>
 
 - <font color=black size=5>效率更高：位运算（`&`、`^`、`>>`）是CPU直接支持的底层操作，比加法+除法（除法需多周期）执行速度更快</font>
 
@@ -198,6 +198,7 @@ int main() {
 | 作用域     | 贯穿整个过程                      | 仅在代码块中                 | 仅在代码块中                       |
 | 默认初始化 | 未赋值默认初始化为0，仅初始化一次 | 未赋值为随机值，栈区垃圾数据 | 未赋值默认初始化为0,且仅初始化一次 |
 | 重复定义   | 不可重复定义                      | 可在不同汉函数里定义         | 可在不同函数里定义                 |
+| 内存       | 系统自动管理内存                  | 系统自动管理内存             | 系统自动管理内存                   |
 
 <font color=black size=5>**代码分析**</font>
 
@@ -465,7 +466,7 @@ int main() {
 ```c
 #include <stdio.h>
 #include <stdlib.h>
-typedef struct {
+typedef struct {//用于存储合并后的数组和长度
     int *arr;   
     int len;   
 } result;
@@ -476,12 +477,12 @@ typedef struct {
 <font color=black size=5>排序去重</font>
 
 ```c
-void swap(int *a, int *b) {
+void swap(int *a, int *b) {//交换函数
     int temp = *a;
     *a = *b;
     *b = temp;
 }
-void bubble_sort(int *arr, int len) {
+void bubble_sort(int *arr, int len) {//冒泡排序
     for (int i = 0; i < len - 1; i++) {
         for (int j = 0; j < len - 1 - i; j++) {
             if (arr[j] > arr[j + 1]) {
@@ -490,7 +491,7 @@ void bubble_sort(int *arr, int len) {
         }
     }
 }
-int remove_duplicates(int *arr, int len) {
+int remove_duplicates(int *arr, int len) {//去除重复元素
     if (len == 0) return 0;
     int unique_idx = 0;  
     for (int i = 1; i < len; i++) {
@@ -499,38 +500,38 @@ int remove_duplicates(int *arr, int len) {
             arr[unique_idx] = arr[i];
         }
     }
-    return unique_idx + 1;  
+    return unique_idx + 1;  //返回去重后的长度
 }
-void your_sort(int arr1[], int len1, int arr2[], int len2, result *res) {
-    int *copy1 = (int *)malloc(len1 * sizeof(int));
+void your_sort(int arr1[], int len1, int arr2[], int len2, result *res) {//合并两个数组的函数
+    int *copy1 = (int *)malloc(len1 * sizeof(int));//复制原数组，防止修改原数组，申请内存
     int *copy2 = (int *)malloc(len2 * sizeof(int));
     for (int i = 0; i < len1; i++) copy1[i] = arr1[i];
     for (int i = 0; i < len2; i++) copy2[i] = arr2[i];
-    bubble_sort(copy1, len1);
+    bubble_sort(copy1, len1);//排序
     bubble_sort(copy2, len2);
-    int len1_unique = remove_duplicates(copy1, len1);
+    int len1_unique = remove_duplicates(copy1, len1);//获取去重后的长度
     int len2_unique = remove_duplicates(copy2, len2);
     int i = 0, j = 0, k = 0;
     int total_len = 0;
     int temp_i = 0, temp_j = 0;
     while (temp_i < len1_unique && temp_j < len2_unique) {
-        if (copy1[temp_i] < copy2[temp_j]) {
+        if (copy1[temp_i] < copy2[temp_j]) {//加入copy1元素
             total_len++;
             temp_i++;
-        } else if (copy1[temp_i] > copy2[temp_j]) {
+        } else if (copy1[temp_i] > copy2[temp_j]) {//加入copy2元素
             total_len++;
             temp_j++;
-        } else {  
+        } else {  //加入相等元素
             total_len++;
             temp_i++;
             temp_j++;
         }
     }
-    total_len += (len1_unique - temp_i) + (len2_unique - temp_j);
-    res->arr = (int *)malloc(total_len * sizeof(int));
-    res->len = total_len;
+    total_len += (len1_unique - temp_i) + (len2_unique - temp_j);//加上剩余未遍历的元素
+    res->arr = (int *)malloc(total_len * sizeof(int));//为结果数组申请内存
+    res->len = total_len;//赋值结果数组长度
     while (i < len1_unique && j < len2_unique) {
-        if (copy1[i] < copy2[j]) {
+        if (copy1[i] < copy2[j]) {//双指针遍历，将较小元素放入结果数组中，并移动指针
             res->arr[k++] = copy1[i++];
         } else if (copy1[i] > copy2[j]) {
             res->arr[k++] = copy2[j++];
@@ -540,9 +541,9 @@ void your_sort(int arr1[], int len1, int arr2[], int len2, result *res) {
             j++;
         }
     }
-    while (i < len1_unique) res->arr[k++] = copy1[i++];
+    while (i < len1_unique) res->arr[k++] = copy1[i++];//将剩余元素加入结果数组
     while (j < len2_unique) res->arr[k++] = copy2[j++];
-    free(copy1);
+    free(copy1);//释放临时放元素数组的内存
     free(copy2);
 }
 ```
@@ -589,7 +590,7 @@ int main() {
 
   <font color=black size=5>`*(int*)(char*)a`取值为`1`，加 1 后为`2`</font>
 
-- <font color=CornflowerBlue size=5><`*((int *)a + 2)`</font>
+- <font color=CornflowerBlue size=5>`*((int *)a + 2)`</font>
 
   <font color=black size=5>`(int*)a`：将数组首地址视为`int*`（每次偏移 4 字节）</font>
 
@@ -609,7 +610,7 @@ int main() {
 
   <font color=black size=5>`(short*)a`：将数组首地址视为`short*`（每次偏移 2 字节）。</font>
 
-  <font color=black size=5>`(short*)a + 4`：偏移`4×2=8`字节，指向`a[1]`的前 2 字节（`a[1]`值为 2，前 2 字节对应`short`值`2`）。</font>
+  <font color=black size=5>`(short*)a + 4`：偏移`4×2=8`字节，指向arr[1]的起始地址，指向`a[1]`的前 2 字节（`a[1]`值为 2，前 2 字节对应`short`值`2`）。</font>
 
   <font color=black size=5>解引用后的值为`2`。</font>
 
