@@ -1,0 +1,1184 @@
+//2.12.5
+#include <stdio.h>
+void br(){
+    printf("Brazil,Russia");
+}
+void ic(){
+printf("India,China");
+}
+int main(){
+br();
+printf(",");
+ic();
+ic();
+printf("\n");
+br();
+return 0;
+}
+//2.12.7
+#include <stdio.h>
+void sm() {
+    printf("Smile!");
+}
+int main() {
+    int i, j;
+    for (i = 3; i >= 1; i--) {
+        for (j = i; j >= 1; j--) {
+            sm();
+            printf("\n");
+        }
+    }
+    return 0;
+}
+//2.12.8
+#include <stdio.h>
+void two(){
+    printf("two");
+}
+void one_three(){
+    printf("one");
+    two();
+    printf("three");
+}
+int main(){
+    printf("strating now:");
+    one_three();
+    printf("done!");
+    return 0;
+}
+//3.11.8
+#include <stdio.h>
+int main(){
+    printf("输入杯数：");
+    double num;
+    scanf("%lf", &num);
+    double pintuo = 0.5 * num;
+    double angsi = 8.0* num;
+    double datangshao = angsi * 2.0;
+    double chashao = datangshao * 3.0;
+    printf("%.2f %.2f %.2f %.2f", pintuo, angsi, datangshao, chashao);
+    return 0;
+}
+// 3.11.6
+#include <stdio.h>
+int main(){
+    printf("输入水的夸脱数");
+    double kuatuoshu;
+    scanf("%lf", &kuatuoshu);
+    double number;
+    number = kuatuoshu * 950.0 / 3.0e-23;
+    printf("%.2f", number);
+    return 0;
+}
+//3.11.4
+#include <stdio.h>
+int main(){
+    double num;
+    printf("Enter a floating-point value:");
+    scanf("%lf", &num);
+    printf("fixed-point notation:%.6f", num);
+    printf("exponential notation:%.6e",num);
+    printf("p notation:%a", num);
+    return 0;
+}
+//4.8.3
+#include <stdio.h>
+int main(){
+    double num1,num2;
+    scanf("%lf %lf", &num1,&num2);
+    printf("The input is %.6f or %.6e",num1,num1);
+    printf("The input is %.6f or %.6f", num2,num2);
+    return 0;
+}
+//4.8.5
+#include <stdio.h>
+int main(){
+    float v;
+    float Size;
+    scanf("%f %f", &v,&Size);
+    float time = Size / v;
+    printf(
+        "At %.2f megabits per second,a file of %.2f megabytes\ndownloads in "
+        "%.2f seconds.",v,Size,time);
+    return 0;
+}
+//4.8.6
+#include <stdio.h>
+void right_print(const char* s){
+    int len = strlen(s);
+    printf("%*d", len, len);
+}
+void left_print(const char*s){
+    int len = srelen(s);
+    printf("-%*d", len, len);
+}
+int main(){
+    char name[100];
+    char first[100];
+    printf("请输入名：");
+    printf("清输入姓：");
+    scanf("%s", name);
+    scanf("%s", first);
+    printf("%s %s\n", name, first);
+    right_print(name);
+    right_print(first);
+    left_print(name);
+    left_print(first);
+    return 0;
+}
+//4.8.7
+#include <float.h>
+#include <stdio.h>
+int main() {
+    double a = 1.0 / 3.0;
+    float b = 1.0 / 3.0;
+    printf("%.6f %.12f %.16f", a, a, a);
+    printf("%.6f  %.6f %.6f", b, b, b);
+    printf("%f %f", FLT_DIG, DBL_DIG);
+    return 0;
+}
+//5.11.1
+#include <stdio.h>
+#define PI 60
+int main(){
+    int num;
+    while(1){
+    scanf("%d", &num);
+    if(num<=0){
+        break;
+    }
+    int hour = num / PI;
+    int minute = num % PI;
+    printf("%d : %d", hour, minute);
+    }
+    return 0;
+}
+// 5.11.8
+#include <stdio.h>
+int main(){
+    int num1, num2;
+    scanf("%d", &num1);
+    while (1) {
+        scanf("%d", &num2);
+        if(num2<=0){
+            break;
+        }
+        printf("%d",num2 % num1);
+    }
+    return 0;
+}
+//5.11.9
+#include <stdio.h>
+void Temperatures(double huashi) {
+    const double sheshi = 5.0 / 9.0 * (huashi - 32.0);
+    const double kaishi = sheshi + 273.16;
+    printf("摄氏温度: %.2f 开氏温度: %.2f\n",
+           sheshi, kaishi);
+}
+int main() {
+    double huashi;
+    printf("请输入华氏温度");
+    while ((scanf("%lf", &huashi)) == 1) {
+        Temperatures(huashi);
+        printf("请输入华氏温度");
+    }
+    return 0;
+}
+//6.16.1
+#include <stdio.h>
+int main(){
+    char str[26];
+    int num=97;
+    for (int i = 0; i < 26; i++) {
+        str[i] = num;
+        num++;
+    }
+    for (int i = 0; i < 26;i++){
+        printf("%c", str[i]);
+    }
+    return 0;
+}
+//6.16.2
+#include <stdio.h>
+int  main(){
+    char c = '$';
+    for (int i = 0; i < 5;i++){
+        for (int j = 0; j <= i;j++){
+            printf("%c", c);
+        }
+        printf("\n");
+    }
+    return 0;
+}
+// 6.16.3
+#include <stdio.h>
+int main(){
+    char str[5] = {'F' ,'E', 'D' ,'C', 'B', 'A'};
+    for (int i = 0; i < 6;i++){
+        for (int j = 0; i <= i;j++){
+            printf("%c", str[j]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
+//6.16.4
+#include <stdio.h>
+int main(){
+    char c = 'A';
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j <= i;j++){
+            printf("%c", c);
+            c += 1;
+        }
+        printf("\n");
+    }
+    return 0;
+}
+//6.16.5
+#include <stdio.h>
+int main(){
+    char c = 'A';
+    char a;
+    scanf("%c", &a);
+    int len = a - 65;
+    for (int i = 0; i < len;i++){
+        char c = 'A';
+        for (int j = 0; j < len - 1; j++) {
+            printf(" ");
+        }
+        for (int k = 0; k < (i + 1) / 2;k++){
+            printf("%c", c);
+            c += 1;
+        }
+        for (int l = 0; l < (i + 1) / 2 - 1;l++){
+            printf("%c", c);
+            c -= 1;
+        }
+        printf("\n");
+    }
+    return 0;
+}
+//6.16.6
+#include <stdio.h>
+int main(){
+    int num1, num2;
+    scanf("%d %d", &num1, &num2);
+    while(num1<num2&&num1*num1<num2&&num1*num1*num1<num2){
+        printf("%d %d %d", num1, num1 * num1, num1 * num1 * num1);
+        num1++;
+    }
+    return 0;
+}
+//6.16.7
+#include <stdio.h>
+int main(){
+    char s[100];
+    scanf("%s", s);
+    int len = strlen(s);
+    for (int i = len-1; i >= 0;i--){
+        printf("%c", s[i]);
+    }
+    return 0;
+}
+//6.16.12
+#include <stdio.h>
+int main(){
+    double sum1=0;
+    double sum2 = 0;
+    int num;
+    while(1){
+    scanf("%d", &num);
+    if(num<=0){
+        break;
+    }
+    for (int i = 1; i <= num;i++){
+        sum1 += 1 / i;
+    }
+    printf("%f", sum1);
+    scanf("%d", &num);
+    if(num<=0){
+        break;
+    }
+    for (int i = 1; i <= num;i++){
+        if(i%2!=0){
+            sum2 += 1 / i;
+        }else{
+            sum2 -= 1 / i;
+        }
+    }
+    printf("%f", sum2);
+    }
+    return 0;
+}
+//6.16.14
+#include <stdio.h>
+int main(){
+    double arr1[8];
+    double arr2[8];
+    for (int i = 0; i < 8;i++){
+        scanf("%lf", &arr1[i]);
+    }
+    arr2[0] = arr1[0];
+    for (int i = 0; i < 8;i++){
+        arr2[i] = arr2[i - 1] + arr1[i];
+    }
+    for (int i = 0; i < 8;i++){
+        printf("%.2lf", arr1[i]);
+    }
+    printf("\n");
+    for (int i = 0; i < 8;i++){
+        printf("%.2lf", arr2[i]);
+
+    }
+    return 0;
+}
+//6.16.15
+#include <stdio.h>
+#define MAX_LEN 256
+int main(){
+    char str[100];
+    int i = 0;
+    while ((str[i]=getchar())!='\n'&&i<MAX_LEN-1){
+        i++;
+    }
+    str[i] = '\0';
+    for (int j = i - 1; j >= 0;j--){
+        putchar(str[j]);
+    }
+    return 0;
+}
+//7.12.1
+#include <stdio.h>
+int main(){
+    char str[200];
+    int i = 0;
+    int count1 = 0;
+    int count2 = 0;
+    int count3 = 0;
+    while ((str[i] = getchar()) != '#') {
+        i++;
+        if(str[i]==' '){
+            count1++;
+        }else if(str[i]=='\n'){
+            count2++;
+        }else{
+            count3++;
+        }
+    }
+    printf("空格数：%d", count1);
+    printf("换行数个数：%d", count2);
+    printf("其他字符个数：%d", count3);
+    return 0;
+}
+//7.12.2
+#include <stdio.h>
+int main(){
+    char str[100];
+    int i = 0;
+    while((str[i]=getchar())!='#'){
+        i++;
+    }
+    for (int j = 0; j < i;j++){
+        printf("%c对应ASCII码:%d", str[j], str[j]);
+        if(j%8==0){
+            printf("\n");
+        }
+    }
+    return 0;
+}
+//7.12.5
+#include <stdio.h>
+int main(){
+    char ch;
+    int i = 0;
+    int count = 0;
+    while ((ch = getchar() != '#')) {
+        switch (ch) {
+            case '.':
+                putchar('!');
+                count++;
+                break;
+                case '!':
+                    putchar('!!');
+                    count++;
+                    break;
+                    default:putchar(ch);
+        }
+    }
+    printf("%d", count);
+    return 0;
+}
+//7.12.10
+#include <stdio.h>
+#define DANSHAN 17850
+#define DANSHAN_RATE1 0.15
+#define DANSHAN_RATE2 0.28
+#define HUZHU 23900
+#define HUZHU_RATE1 0.15
+#define HUZHU_RATE2 0.28
+#define YIHUNGONGYOU 29750
+#define YIHUNGONGYOU_RATE1 0.15
+#define YIHUNGONGYOU_RATE2 0.28
+#define YIHUNLIYI 14875
+#define YIHUNLIYI_RATE1 0.15
+#define YIHUNLIYI_RATE2 0.28
+int main(){
+    printf("1:单身/n2:户主\n3:已婚，共有\n4:已婚，离异");
+    int num;
+    double income;
+    while (1) {
+        scanf("%d %.2lf", &num,&income);
+        switch(num){
+            case 1:
+            if(income<DANSHAN){
+                printf("%.2lf\n", income * DANSHAN_RATE1);
+            }else{
+                printf("%.2lf\n", DANSHAN * DANSHAN_RATE1 +
+                                    (income - DANSHAN) * DANSHAN_RATE2);
+            }
+            case 2:
+            if(income<HUZHU){
+                printf(".2lf\n", income * HUZHU_RATE1);
+            }else{
+                printf("%.2lf\n",
+                       HUZHU * HUZHU_RATE1 + (income - HUZHU) * HUZHU_RATE2);
+            }
+            case 3:
+            if (income<YIHUNGONGYOU){
+                printf("%.2lf\n", income * YIHUNGONGYOU_RATE1);
+            }else{
+                printf("%.2lf\n",
+                       YIHUNGONGYOU * YIHUNGONGYOU_RATE1 +
+                           (income - YIHUNGONGYOU) * YIHUNGONGYOU_RATE2);
+            }
+            case 4:
+            if(income<YIHUNLIYI){
+                printf("%.2lf\n", income * YIHUNLIYI_RATE1);
+            }else{
+                printf("%.2lf\n", YIHUNLIYI * YIHUNLIYI_RATE1 +
+                                    (income - YIHUNLIYI) * YIHUNLIYI_RATE2);
+            }
+            default :
+                printf("输入错误\n");
+        }
+    }
+    return 0;
+}
+//8.11.1
+#include <stdio.h>
+int main(){
+    int count = 0;
+    int ch;
+    while((ch=getchar()!=EOF)){
+        count++;
+    }
+    printf("%d", count);
+    return 0;
+}
+//8.11.8
+#include <stdio.h>
+int main() {
+    char choice;
+    double num1, num2, result;
+    while (1) {
+        printf("a. 加法\n");
+        printf("s. 减法\n");
+        printf("m. 乘法\n");
+        printf("d. 除法\n");
+        printf("q. 退出\n");
+        scanf(" %c", &choice);
+        scanf("%lf %lf", &num1,&num2);
+        switch (choice) {
+            case 'a':
+                result = num1 + num2;
+                printf("%.2f + %.2f = %.2f\n", num1, num2, result);
+                break;
+            case 's':
+                result = num1 - num2;
+                printf("%.2f - %.2f = %.2f\n", num1, num2, result);
+                break;
+            case 'm':
+                result = num1 * num2;
+                printf("%.2f * %.2f = %.2f\n", num1, num2, result);
+                break;
+            case 'd':
+                if (num2 == 0) {
+                    printf("错误\n");
+                    while (getchar() != '\n')
+                        ;
+                } else {
+                    result = num1 / num2;
+                    printf("%.2f / %.2f = %.2f\n\n", num1, num2, result);
+                }
+                break;
+            default:
+                printf("输入无效\n");
+        }
+    }
+
+    return 0;
+}
+//8.11.2
+#include <stdio.h>
+int main() {
+    char ch;
+    int count = 0;
+    while ((ch = getchar()) != EOF) {
+        if (ch == '\n') {
+            printf("%c %d\n", ch, ch);
+            count = 0; 
+        } else if (ch == '\t') {
+            printf("%c %d",ch, ch);
+            count++;
+        } else if (ch < 32) {
+            printf("^%c %d ", ch + 64, ch);
+            count++;
+        } else {
+            printf("%c %d ", ch, ch);
+            count++;
+        }
+        if (count == 10) {
+            printf("\n");
+            count = 0;
+        }
+    }
+    return 0;
+}
+//8.11.3
+#include <ctype.h>
+#include <stdio.h>
+int main() {
+    char ch;
+    int upper = 0, lower = 0;
+    while ((ch = getchar()) != EOF) {
+        if (isupper(ch)) {
+            upper++;
+        } else if (islower(ch)) {
+            lower++;
+        }
+    }
+    printf("%d\n", upper);
+    printf("%d", lower);
+    return 0;
+}
+//9.11.11
+//循环
+#include <stdio.h>
+int fibonacci(int n) {
+    if (n <= 1) {
+        return n;
+    }
+    int a = 0;  
+    int b = 1;  
+    int c;  
+    for (int i = 2; i <= n; i++) {
+        c = a + b; 
+        a = b;      
+        b = c;      
+    }
+    return b;  
+}
+
+int main() {
+    int n = 10;
+    printf("%d",  fibonacci(n)); 
+    return 0;
+}
+//递归
+int fibonacci(int n) {
+    if (n == 0) {
+        return 0;
+    } else if (n == 1) {
+        return 1;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    printf("%d", n, fibonacci(n));
+    return 0;
+}
+//9.11.6
+#include <stdio.h>
+void sort(double* a, double* b, double* c) {
+    double num1 = *a, num2 = *b, num3 = *c;
+    if (num1 <= num2 && num1 <= num3) {
+        *a = num1;    
+        *b = (num2 <= num3) ? num2 : num3;
+        *c = (num2 > num3) ? num2 : num3;
+    } else if (num2 <= num1 && num2 <= num3) {
+        *a = num2;  
+        *b = (num1 <= num3) ? num1 : num3;
+        *c = (num1 > num3) ? num1 : num3;
+    } else {
+        *a = num3;  
+        *b = (num1 <= num2) ? num1 : num2;
+        *c = (num1 > num2) ? num1 : num2;
+    }
+}
+int main() {
+    double x, y, z;
+    scanf("%lf %lf %lf", &x, &y, &z);
+    sort(&x, &y, &z);
+    printf("x=%.2lf, y=%.2lf, z=%.2lf", x, y,z);
+
+    return 0;
+}
+//9.11.7
+#include <ctype.h>
+#include <stdio.h>
+int Position(char ch) {
+    if (isalpha(ch)) {
+        char lowerCh = tolower(ch);
+        return lowerCh - 'a' + 1;
+    } else {
+        return -1;
+    }
+    }
+    int main() {
+        char ch;
+        while ((ch = getchar()) != EOF) {
+            if (ch == '\n') {
+                continue;
+            }
+            int position = Position(ch);
+            if (position != -1) {
+                printf("字符 '%c' 是字母，在字母表中的位置是 %d\n", ch,position);
+            } else {
+                printf("字符 '%c' 不是字母\n", ch);
+            }
+            while (getchar() != '\n')
+                ;
+        }
+        return 0;
+    }
+//10.13.2
+#include <stdio.h>
+    void copy_arr(double target[], double source[], int n) {
+        for (int i = 0; i < n; i++) {
+            target[i] = source[i];
+        }
+    }
+    void copy_ptr(double* target, double* source, int n) {
+        for (int i = 0; i < n; i++) {
+            *(target + i) = *(source + i);
+        }
+    }
+    void copy_ptr2(double* target, double* source, double* end) {
+        while (source < end) {
+            *target = *source;
+            target++;
+            source++;
+        }
+    }
+    int main() {
+        double source[5] = {1.1, 2.2, 3.3, 4.4, 5.5};
+        double target1[5], target2[5], target3[5];
+        copy_arr(target1, source, 5);
+        copy_ptr(target2, source, 5);
+        copy_ptr2(target3, source, source + 5);
+        printf("target1数组");
+        for (int i = 0; i < 5; i++) {
+            printf("%.2f ", target1[i]);
+        }
+        printf("\n");
+        printf("target2数组");
+        for (int i = 0; i < 5; i++) {
+            printf("%.2f ", target2[i]);
+        }
+        printf("\n");
+        printf("target3数组");
+        for (int i = 0; i < 5; i++) {
+            printf("%.2f ", target3[i]);
+        }
+        printf("\n");
+        return 0;
+    }
+    //10.13.7
+#include <stdio.h>
+    void copy(double target[], double source[], int n) {
+        for (int i = 0; i < n; i++) {
+            target[i] = source[i];
+        }
+    }
+    int main() {
+        double arr[2][3] = {{1.1, 2.2, 3.3}, {4.4, 5.5, 6.6}};
+        double copy_arr[2][3];
+        for (int i = 0; i < 2; i++) {
+            copy(copy_arr[i], arr[i], 3);
+        }
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 3; j++) {
+                printf("%.2f ", copy_arr[i][j]);
+            }
+            printf("\n");
+        }
+        return 0;
+    }
+    //10.13.9
+#include <stdio.h>
+    void copy(double target[][5], double source[][5], int a) {
+        for (int i = 0; i < a; i++) {
+            for (int j = 0; j < 5; j++) {
+                target[i][j] = source[i][j];
+            }
+        }
+    }
+    void display(double arr[][5], int a) {
+        for (int i = 0; i < a; i++) {
+            for (int j = 0; j < 5; j++) {
+                printf("%.1f ", arr[i][j]);
+            }
+            printf("\n");
+        }
+    }
+    int main() {
+        double source[3][5] = {{1.1, 2.2, 3.3, 4.4, 5.5},
+                               {6.6, 7.7, 8.8, 9.9, 10.1},
+                               {11.1, 12.2, 13.3, 14.4, 15.5}};
+        double target[3][5];
+        copy(target, source, 3);
+        printf("原数组：\n");
+        display(source, 3);
+        printf("拷贝后的数组：\n");
+        display(target, 3);
+        return 0;
+    }
+    //10.13.13
+#include <stdio.h>
+    double cavg(double arr[], int n) {
+        double sum = 0;
+        for (int i = 0; i < n; i++) {
+            sum += arr[i];
+        }
+        return sum / n;
+    }
+    void cgroup_avg(double arr[][5], double group_avg[], int a) {
+        for (int i = 0; i < a; i++) {
+            group_avg[i] = cavg(arr[i], 5);
+        }
+    }
+    double ctotal_avg(double arr[][5], int a, int b) {
+        double sum = 0;
+        for (int i = 0; i < a; i++) {
+            for (int j = 0; j < b; j++) {
+                sum += arr[i][j];
+            }
+        }
+        return sum / (a * b);
+    }
+    double cmax(double arr[][5], int a, int b) {
+        double max = arr[0][0];
+        for (int i = 0; i < a; i++) {
+            for (int j = 0; j < b; j++) {
+                if (arr[i][j] > max) {
+                    max = arr[i][j];
+                }
+            }
+        }
+        return max;
+    }
+    int main() {
+        double data[3][5];
+        double group_avg[3];
+        double total_avg, max;
+        printf("请输入3组数据,每组5个double类型的数:\n");
+        for (int i = 0; i < 3; i++) {
+            printf("第%d组:", i + 1);
+            for (int j = 0; j < 5; j++) {
+                scanf("%lf", &data[i][j]);
+            }
+        }
+        cgroup_avg(data, group_avg, 3);
+        total_avg = ctotal_avg(data, 3, 5);
+        max = cmax(data, 3, 5);
+        printf("每组数据的平均值：\n");
+        for (int i = 0; i < 3; i++) {
+            printf("第%d组:%.2f\n", i + 1, group_avg[i]);
+        }
+        printf("所有数据的平均值：%.2f\n", total_avg);
+        printf("所有数据中的最大值：%.2f\n", max);
+
+        return 0;
+    }
+    //11.13.10
+#include <stdio.h>
+#include <string.h>
+    void remove(char* str) {
+        int j = 0;
+        for (int i = 0; str[i] != '\0'; i++) {  // 遍历知道遇到'\0'
+            if (str[i] != ' ') {
+                str[j++] = str[i];
+            }
+        }
+        str[j] = '\0';
+    }
+        int main() {
+            char ptr[100];
+            while (1) {
+                if (fgets(ptr, sizeof(ptr), stdin) == NULL) {
+                    break;
+                }
+                ptr[strcspn(ptr, "\n")] = '\0';
+                if (strlen(ptr) == 0) {
+                    break;
+                }
+                remove(ptr);
+                printf("处理后：%s\n", ptr);
+            }
+            return 0;
+        }
+        // 11.13.13
+#include <stdio.h>
+#include <string.h>
+        int main(int argc, char* argv[]) {
+            for (int i = argc - 1; i > 0; i--) {
+                printf("%s ", argv[i]);
+            }
+            printf("\n");
+            return 0;
+        }
+        // 11.13.16
+#include <ctype.h>
+#include <stdio.h>
+        int main(int argc, char* argv[]) {
+            int flag_p =0, flag_u = 0, flag_l = 0;
+            char ch;
+            for (int i = 1; i < argc; i++) {
+                if (strcmp(argv[i], "-p") == 0) {
+                    flag_p = 1;
+                    flag_u = 0;
+                    flag_l = 0;
+                } else if (strcmp(argv[i], "-u") == 0) {
+                    flag_p = 0;
+                    flag_u = 1;
+                    flag_l = 0;
+                } else if (strcmp(argv[i], "-l") == 0) {
+                    flag_p = 0;
+                    flag_u = 0;
+                    flag_l = 1;
+                }
+            }
+            while ((ch = getchar()) != EOF) {
+                if (flag_u) {
+                    putchar(toupper(ch));
+                } else if (flag_l) {
+                    putchar(tolower(ch));
+                } else { 
+                    putchar(ch);
+                }
+            }
+            return 0;
+        }
+        //12.9.1
+#include <stdio.h>
+        void critic(int units) {
+            printf("No luck, my friend. Try again.\n");
+        }
+
+        int main(void) {
+            int units;
+            printf("How many pounds to a firkin of butter?\n");
+            scanf("%d", &units);
+            while (units != 56) {
+                critic(units);  
+                scanf("%d", &units);
+            }
+            printf("You must have looked it up!\n");
+            return 0;
+        }
+        //12.9.4
+#include <stdio.h>
+        int number() {
+            static int count = 0; 
+            count++;               
+            return count;         
+        }
+        int main(void) {
+            for (int i = 0; i < 5; i++) {  
+                printf("第 %d 次调用函数，返回次数：%d\n", i + 1, number());
+            }
+            return 0;
+        }
+        //12.9.8
+#include <stdio.h>
+        int* make_array(int elem, int val) {
+            int* arr = (int*)malloc(elem * sizeof(int));
+            if (arr == NULL) {
+                exit(1);
+            }
+            for (int i = 0; i < elem; i++) {
+                arr[i] = val;
+            }
+            return arr;
+        }
+        void show_array(const int ar[], int n) {
+            for (int i = 0; i < n; i++) {
+                printf("%d ", ar[i]);
+                if ((i + 1) % 8 == 0) {
+                    printf("\n");
+                }
+            }
+        }
+        //13.11.1
+        #include<stdio.h>
+        #include<stdlib.h>
+        int main(){
+            FILE* fp;
+            int ch;
+            unsigned long count = 0;
+            char name[100];
+            printf("请输入文件名：");
+            scanf("%d", name);
+            fp = fopen(name, "r");
+            if(fp==NULL){
+                printf("无法打开文件");
+                exit(EXIT_FAILURE);
+            }
+            while((ch=get(fp))!=EOF){
+                count++;
+                putchar(ch);
+            }
+            fclose(fp);
+            printf("文件%s有%lu个字符",name, count);
+            return 0;
+        }
+        //13.11.4
+#include <stdio.h>
+#include <stdlib.h>
+        int main(int argc, char* argv[]) {
+            for (int i = 1; i < argc; i++) {
+                FILE* fp = fopen(argv[i], "r");
+                if (fp == NULL) {
+                    printf("无法打开文件 %s\n", argv[i]);
+                    exit(EXIT_FAILURE);
+                }
+                char buffer[1024];
+                while (fgets(buffer, sizeof(buffer), fp) != NULL) {
+                    printf("%s", buffer);
+                }
+                fclose(fp);
+            }
+            return 0;
+        }
+        //13.11.7
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_LINE 256
+        int main(int argc, char* argv[]) {
+            FILE *fp1, *fp2;
+            char line1[MAX_LINE], line2[MAX_LINE];
+            fp1 = fopen(argv[1], "r");
+            fp2 = fopen(argv[2], "r");
+            if (fp1 == NULL || fp2 == NULL) {
+                printf("无法打开文件\n");
+                exit(EXIT_FAILURE);
+            }
+            while (fgets(line1, MAX_LINE, fp1) != NULL ||
+                   fgets(line2, MAX_LINE, fp2) != NULL) {
+                if (fgets(line1, MAX_LINE, fp1) != NULL) {
+                    printf("%s", line1);
+                } else {
+                    printf("(文件1无此行)\n");
+                }
+                if (fgets(line2, MAX_LINE, fp2) != NULL) {
+                    printf("%s", line2);
+                } else {
+                    printf("(文件2无此行)\n");
+                }
+            }
+            fclose(fp1);
+            fclose(fp2);
+            return 0;
+        }
+        //14.18.1
+        #include <stdio.h>
+        #include<string.h>
+        #include<ctype.h>
+        int runnian(int year){
+            return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+        }
+        void TOLOWER(char*str){
+            while(*str){
+                *str = tolower(*str);
+                str++;
+            }
+        }
+        int totaldays(int year,char*monthname){
+            char months[12][10] = {"january", "february", "march",
+                                   "april",   "may",      "june",
+                                   "july",    "august",   "september",
+                                   "october", "november", "december"};
+            int monthdays[12] = {31, 28, 31, 30, 31, 30,31, 31, 30, 31, 30, 31};
+            int monthindex = -1;
+            int total = 0;
+            TOLOWER(monthname);
+            for (int i = 0; i < 12;i++){
+                if(strcmp(monthname,months[i])==0){
+                    monthindex = i;
+                    break;
+                }
+            }
+            for (int i = 0; i <= monthindex;i++){
+                total += monthdays[i];
+            }
+            if(runnian(year)&&monthindex>=1){
+                total += 1;
+            }
+            return total;
+        }
+        int main(){
+            int year;
+            char monthname[20];
+            scanf("%d %s", &year,&monthname);
+            int result = totaldays(year, monthname);
+            printf("共%d天",result);
+            return 0;
+        }
+        //14.18.2
+#include <ctype.h>
+#include <stdio.h>
+#include <string.h>
+        typedef struct {
+            char quanxie[10];  
+            char suoxie[4];  
+            int days;
+        } Month;
+        Month months[] = {{"january", "jan", 31},   {"february", "feb", 28},
+                          {"march", "mar", 31},     {"april", "apr", 30},
+                          {"may", "may", 31},       {"june", "jun", 30},
+                          {"july", "jul", 31},      {"august", "aug", 31},
+                          {"september", "sep", 30}, {"october", "oct", 31},
+                          {"november", "nov", 30},  {"december", "dec", 31}};
+        void toLower(char* str) {
+            while (*str) {
+                *str = tolower(*str);
+                str++;
+            }
+        }
+        int runnian(int year) {
+            return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+        }
+        int zhuanhuamonth(char* input) {
+            toLower(input);
+            int num = atoi(input);
+            if (num >= 1 && num <= 12)
+                return num;
+            for (int i = 0; i < 12; i++) {
+                if (strcmp(input, months[i].quanxie) == 0 ||
+                    strcmp(input, months[i].suoxie) == 0) {
+                    return i + 1; 
+                }
+            }
+            return 0; 
+        }
+        int getDayOfYear() {
+            char monthInput[20];
+            int day, month, year, total = 0;
+            printf("请输入年份：");
+            while (scanf("%d", &year) != 1 || year < 1) {
+                printf("年份无效");
+                while (getchar() != '\n')
+                    ; 
+            }
+            printf("请输入月份：");
+            while (scanf("%s", monthInput) != 1 ||
+                   (month = zhuanhuamonth(monthInput)) == 0) {
+                printf("月份无效");
+                while (getchar() != '\n')
+                    ;
+            }
+            printf("清输入日期：");
+            int maxDay = months[month - 1].days;
+            if (month == 2 && runnian(year))
+                maxDay = 29;  
+            while (scanf("%d", &day) != 1 || day < 1 || day > maxDay) {
+                printf("日期无效", maxDay);
+                while (getchar() != '\n')
+                    ;
+            }
+            for (int i = 1; i < month; i++) {
+                if (i == 2) {
+                    total += runnian(year) ? 29 : 28;
+                } else {
+                    total += months[i - 1].days;
+                }
+            }
+            total += day;
+            return total;
+        }
+        int main() {
+            int day = getDayOfYear();
+            printf("%d", day);
+            return 0;
+        }
+        //14.18.4
+#include <stdio.h>
+#include <string.h>
+        typedef struct {
+            char firstName[20];
+            char middleName[20];
+            char lastName[20];
+        } Name;
+        typedef struct {
+            int number;
+            Name name;
+        } Person;
+        void printfperson(Person* p) {
+            printf("社保号: %d\n", p->number);
+            printf("姓名: ");
+            printf("%s", p->name.firstName);
+            if (strlen(p->name.middleName) > 0) {
+                printf(".%c.", p->name.middleName[0]);
+            }
+            printf("%s", p->name.lastName);
+        }
+        int main() {
+            Person people[5] = {{25464, {"Cao", "Ling", "xi"}},
+                                {12345, {"wang", "", "jing"}},
+                                {98765, {"li", "fan", "yu"}},
+                                {45678, {"huang", "yi", "ping"}},
+                                {78901, {"liu", "", "peng"}}};
+
+            for (int i = 0; i < 5; i++) {
+                printfperson(&people[i]);
+                printf("\n");
+            }
+            return 0;
+        }
+        //15.9.3
+        #include <stdio.h>
+        int number(int n){
+            int count = 0;
+            for (int i = 1; i < 32;i++){
+             if(n&(1<<i)){
+                 count++;
+             }
+            }
+            return count;
+        }
+        int main(){
+            int num;
+            int count;
+            scanf("%d", &num);
+            number(num);
+            printf("%d", count);
+            return 0;
+        }
+        //16.18.2
+#define DAOSHU(n) (1.0 / n)
+#define PINGJUNZHI(a, b) ((a + b) / 2.0)
+#define JIEGUODAOSHU(x) (1.0 / x)
+#include <stdio.h>
+        int main() {
+            double num1, num2;
+            scanf("%lf %lf", &num1, &num2);
+            double result =
+                JIEGUODAOSHU(PINGJUNZHI(DAOSHU(num1), DAOSHU(num2)));
+            printf("%.2lf", result);
+            return 0;
+        }
+        //
