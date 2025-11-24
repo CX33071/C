@@ -1,14 +1,15 @@
-#include <dirent.h>
-#include <getopt.h>
-#include <grp.h>
-#include <limits.h>
-#include <pwd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
-#include <sys/types.h>
+#include <locale.h>
+#include <dirent.h>
 #include <time.h>
+#include <grp.h>
+#include <pwd.h>
+#include <limits.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <getopt.h>
 #include <unistd.h>
 #define BLUE "\033[0;34m"
 #define GREEN "\033[0;32m"
@@ -26,10 +27,94 @@ int flag_t = 0;
 int flag_i = 0;
 int flag_s = 0;
 int flag_l = 0;
+void init_locale(){
+    setlocale(LC_COLLATE, "");
+    setlocale(LC_CTYPE, "");
+}
+int type(char c){
+    if(c>='0'&&c<='9'){
+        return 3;
+    }else if((c>='a'&&c<='z')||(c>='A'&&c<='Z')){
+        return 0;
+    }else{
+        return 1;
+    }
+}
+int youxianji(char*str){
+    if(*str=='.'){
+        str++;
+    }
+    while(*str!='\0'){
+        unsigned char c = (unsigned char)*str;
+        if(c>=0xE0&&c<=0xEF){
+            str += 3;
+            continue;
+        }
+        return type(c);
+    }
+    return 2;
+}
+int is_chinese(char*str){
+    char * start = strchr(str, '.');
+    int len;
+    if (start == NULL) {
+        len = strlen(str);
+    } else {
+        len = start - str;
+    }
+    char* ptr = str;
+    int i=0;
+    while (i<len) {
+        unsigned char c = (unsigned char)ptr[i];
+        if(!(c>=0xE0&&c<=0xEF)){
+            return 0;
+        }
+        i += 3;
+    }
+    return 1;
+}
+int is_english(char * str){
+    while(*str!='\0'){
+        unsigned char c = (unsigned char)*str;
+        if(!((c>=0x41&&c<=0x5A)||(c>=0x61&&c<=0x7A))){
+            return 0;
+        }
+        str++;
+    }
+    return 1;
+}
+
 int compare_name(const void*a,const void*b){
     struct dirent** e1 = (struct dirent**)a;
     struct dirent** e2 = (struct dirent**)b;
-    int num = strcmp((*e1)->d_name, (*e2)->d_name);
+    if(strcmp((*e1)->d_name,".")==0)
+        return -1;
+        if(strcmp((*e2)->d_name,".")==0)
+            return 1;
+            if(strcmp((*e1)->d_name,"..")==0)
+                return -1;
+                if(strcmp((*e2)->d_name,"..")==0)
+                    return 1;
+    int ch1 = is_chinese((*e1)->d_name);
+    int ch2 = is_chinese((*e2)->d_name);
+    if(!ch1&&ch2){
+        return -1;
+    }else if(ch1&&!ch2){
+        return  1;
+    }
+    int first1 = youxianji((*e1)->d_name);
+    int first2 = youxianji((*e2)->d_name);
+    if(first1!=first2){
+    return first2 - first1;
+    }
+    int en1 = is_english((*e1)->d_name);
+    int en2 = is_english((*e2)->d_name);
+    int num;
+    if(en1&&en2){
+        num = strcasecmp((*e1)->d_name, (*e2)->d_name);
+    }else{
+        num = strcoll((*e1)->d_name, (*e2)->d_name);
+    }
     return flag_r ? -num : num;
 }
 int compare_time(const void*a,const void*b){
@@ -46,7 +131,7 @@ int compare_time(const void*a,const void*b){
     }
     struct stat st1;
     struct stat st2;
-    if(stat(path1,&st1)==-1||stat(path2,&st2)==-1){
+    if(lstat(path1,&st1)==-1||lstat(path2,&st2)==-1){
         return 0;
     }
     long num = st2.st_mtime - st1.st_mtime;
@@ -106,7 +191,7 @@ void print_file(char*full_path,struct dirent*entry,struct stat*st){
                             printf("%-8s    ", pw->pw_name);
                             struct group* gr = getgrgid(st->st_gid);
                             printf("%8s ", gr->gr_name);
-                                printf("%8ld ", (long)st->st_size);
+                            printf("%8ld ", (long)st->st_size);
                             struct tm* tm = localtime(&st->st_mtime);
                             char time_str[32];
                             strftime(time_str, sizeof(time_str), "%m月 %d %H:%M",
@@ -134,11 +219,7 @@ void print_file(char*full_path,struct dirent*entry,struct stat*st){
             printf("%s\n", entry->d_name);
         }
     }else{
-        if(flag_l){
-            printf("%s\n", entry->d_name);
-        }else{
-            printf("%s  ", entry->d_name);
-        }
+        printf("%s\n", entry->d_name);
     }
     printf(RESET);
 }
@@ -169,18 +250,18 @@ void list_dir(char*dir){
             snprintf(full_path, PATH_MAX, "%s/%s", dir, entry->d_name);
         }
         struct stat st;
-        if(stat(full_path,&st)==0){
+        if(lstat(full_path,&st)==0){
             print_file(full_path, entry, &st);
-            if(flag_R&&S_ISDIR(st.st_mode)&&strcmp(entry->d_name,".")!=0&&strcmp(entry->d_name,"..")!=0){
-                arrs[arrs_count] = strdup(full_path);
-                arrs_count++;
+            if(flag_R&&!S_ISLNK(st.st_mode)&&S_ISDIR(st.st_mode)&&strcmp(entry->d_name,".")!=0&&strcmp(entry->d_name,"..")!=0){
+                char* path1 = strdup(full_path);
+                if(path1!=NULL){
+                    arrs[arrs_count++] = path1;
+                }else{
+                    perror("strdup failed");
+                }
             }
         }else{
-            if(flag_l){
-                printf("%s\n", entry->d_name);
-            }else{
-                printf("%s  ", entry->d_name);
-            }
+            printf("%s\n", entry->d_name);
         }
         free(entries[i]);
     }
@@ -195,6 +276,7 @@ void list_dir(char*dir){
     free(arrs);
 }
 int main(int argc,char*argv[]){
+    init_locale();
     int num;
     while((num=getopt(argc,argv,"laRtris"))!=-1){
         switch(num){
@@ -220,8 +302,7 @@ int main(int argc,char*argv[]){
                                     flag_r = 1;
                                     break;
                                     case '?':
-                                        fprintf(stderr, "ls:无法访问‘%c'", optopt);
-                                        exit(1);
+                                        fprintf(stderr, "ls:参数无效：‘%c'\n", optopt);
         }
     }
     int dir_count = 0;
@@ -241,8 +322,9 @@ int main(int argc,char*argv[]){
         if(S_ISDIR(st.st_mode)){
             list_dir(dirs[i]);
         }else{
-            struct dirent entry;
-            snprintf(entry.d_name, sizeof(entry.d_name), "%s", dirs[i]);
+            struct dirent entry = {0};
+            snprintf(entry.d_name, sizeof(entry.d_name)-1, "%s", dirs[i]);
+            entry.d_name[sizeof(entry.d_name) - 1] = '\0';
             print_file(dirs[i], &entry, &st);
             if(!flag_l){
                 printf("\n");
