@@ -32,6 +32,19 @@ void init_locale() {
     setlocale(LC_COLLATE, "");
     setlocale(LC_CTYPE, "");
 }
+int houzhui(char*filename,char*arr[],int count){
+    char* houzhui = strrchr(filename, '.');
+    if(!houzhui){
+        return 0;
+    }
+    houzhui++;
+    for (int i = 0; i < count;i++){
+        if(strcasecmp(houzhui,arr[i])==0){
+            return 1;
+        }
+    }
+    return 0;
+}
 int type(char c,int is_chinese_char) {
     if(is_chinese_char){
         return 2;
@@ -211,14 +224,22 @@ void print_file(char* full_path, struct dirent* entry, struct stat* st) {
     } else if (S_ISLNK(st->st_mode)) {
         printf(CYAN);  
     } else if (S_ISCHR(st->st_mode) || S_ISBLK(st->st_mode)) {
+        printf(YELLOW);
+    } else if (S_ISFIFO(st->st_mode)) {
         printf(YELLOW); 
-    } else if (S_ISFIFO(st->st_mode) || S_ISSOCK(st->st_mode)) {
+    } else if (S_ISSOCK(st->st_mode)) {
         printf(MAGENTA); 
     } else {
-        if ((st->st_mode & (S_ISUID | S_ISGID)) &&
-            !(st->st_mode & (S_IXUSR | S_IXGRP | S_IXOTH))) {
+        char* filename = entry->d_name;
+        char* arr1[] = {"gz", "xz", "zip"};
+        char* arr2[] = {"jpg", "png"};
+        if(houzhui(filename,arr1,sizeof(arr1)/sizeof(arr1[0]))){
             printf(RED);
-        } else if (st->st_mode & (S_IXUSR | S_IXGRP | S_IXOTH)) {
+        }else if(houzhui(filename,arr2,sizeof(arr2)/sizeof(arr2[0]))){
+            printf(MAGENTA);
+        } else if ((st->st_mode & (S_ISUID | S_ISGID)) &&!(st->st_mode &(S_IXUSR | S_IXGRP | S_IXOTH))) {
+            printf(RED);
+        }else if(st->st_mode & (S_IXUSR | S_IXGRP | S_IXOTH)){
             printf(GREEN);
         }
     }
