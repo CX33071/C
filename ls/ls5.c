@@ -11,13 +11,13 @@
 #include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
-#define BLUE "\033[0;34m"
-#define GREEN "\033[0;32m"
-#define YELLOW "\033[0;33m"
-#define CYAN "\033[0;36m"
-#define MAGENTA "\033[0;35m"
+#define BLUE "\033[1;34m"
+#define GREEN "\033[1;32m"
+#define YELLOW "\033[1;33m"
+#define CYAN "\033[1;36m"
+#define MAGENTA "\033[1;35m"
 #define RESET "\033[0m"
-#define RED "\033[0;31m"
+#define RED "\033[1;31m"
 #define PATH_MAX 4096
 #define BLOCK_SIZE 512
 char* dir1;
@@ -32,28 +32,31 @@ void init_locale() {
     setlocale(LC_COLLATE, "");
     setlocale(LC_CTYPE, "");
 }
-int type(char c) {
-    if (c >= '0' && c <= '9') {
+int type(char c,int is_chinese_char) {
+    if(is_chinese_char){
+        return 2;
+    }else if(c>='0'&&c<='9'){
         return 3;
-    } else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+    }else if((c>='a'&&c<='z')||(c>='A'&&c<='Z')){
         return 0;
-    } else {
+    }else{
         return 1;
     }
 }
 int youxianji(char* str) {
-    if (*str == '.') {
-        str++;
-    }
-    while (*str != '\0') {
-        unsigned char c = (unsigned char)*str;
-        if (c >= 0xE0 && c <= 0xEF) {
-            str += 3;
-            continue;
+    char* ptr = str;
+    while (*ptr == '.') {
+        ptr++;
+        if (*ptr == '\0') {
+            return 2;
         }
-        return type(c);
     }
-    return 2;
+    unsigned char first_byte = (unsigned char)*ptr;
+    if (first_byte >= 0xE0 && first_byte <= 0xEF) {
+        return type(first_byte, 1);  
+    } else {
+        return type(first_byte, 0); 
+    }
 }
 int is_chinese(char* str) {
     char* start = strchr(str, '.');
@@ -99,24 +102,33 @@ int compare_name(const void* a, const void* b) {
         return -1;
     if (strcmp((*e2)->d_name, "..") == 0)
         return 1;
-    char* cmp1 = ((*e1)->d_name[0] == '.') ? ((*e1)->d_name + 1) : (*e1)->d_name;
-    char* cmp2 = ((*e2)->d_name[0] == '.') ? ((*e2)->d_name + 1 ): (*e2)->d_name;
-    int first1 = youxianji((*e1)->d_name);
-    int first2 = youxianji((*e2)->d_name);
-    if (first1 != first2) {
-        return first2 - first1;
+    int d1 = youxianji((*e1)->d_name);
+    int d2 = youxianji((*e2)->d_name);
+    if(d1!=d2){
+        return flag_r ? (d1 - d2) : (d2 - d1);
     }
-    int ch1 = is_chinese((*e1)->d_name);
-    int ch2 = is_chinese((*e2)->d_name);
-    int en1 = is_english((*e1)->d_name);
-    int en2 = is_english((*e2)->d_name);
-    int num;
-    if (en1 && en2) {
-        num = strcasecmp(cmp1, cmp2);
-    } else if(ch1&&ch2){
-        num = strcoll((*e1)->d_name, (*e2)->d_name);
-    }else{
-        num = strcmp((*e1)->d_name, (*e2)->d_name);
+    int num = 0;
+    switch(d1){
+        case 3:
+            num = atoi((*e1)->d_name) - atoi((*e2)->d_name);
+            break;
+        case 2:
+            num = strcoll((*e1)->d_name, (*e2)->d_name);
+            break;
+        case 1:
+            num = strcmp((*e1)->d_name, (*e2)->d_name);
+            break;
+        case 0:
+            char* cmp1 = (*e1)->d_name;
+            while (*cmp1 == '.')
+                cmp1++;
+            char* cmp2 = (*e2)->d_name;
+            while (*cmp2 == '.')
+                cmp2++;
+            num = strcasecmp(cmp1, cmp2);
+            break;
+        default:
+            num = strcmp((*e1)->d_name, (*e2)->d_name);
     }
     return flag_r ? -num : num;
 }
@@ -195,17 +207,20 @@ void print_file(char* full_path, struct dirent* entry, struct stat* st) {
         printf("%s ", time_str);
     }
     if (S_ISDIR(st->st_mode)) {
-        printf(BLUE);
-    } else if (st->st_mode & (S_IXUSR | S_IXGRP | S_IXOTH)) {
-        printf(GREEN);
-    } else if (S_ISCHR(st->st_mode) || S_ISBLK(st->st_mode)) {
-        printf(YELLOW);
+        printf(BLUE); 
     } else if (S_ISLNK(st->st_mode)) {
-        printf(CYAN);
+        printf(CYAN);  
+    } else if (S_ISCHR(st->st_mode) || S_ISBLK(st->st_mode)) {
+        printf(YELLOW); 
     } else if (S_ISFIFO(st->st_mode) || S_ISSOCK(st->st_mode)) {
-        printf(MAGENTA);
-    }else if((st->st_mode&(S_ISUID|S_ISGID))&&!(st->st_mode&&(S_IXUSR|S_IXGRP|S_IXOTH))){
-        printf(RED);
+        printf(MAGENTA); 
+    } else {
+        if ((st->st_mode & (S_ISUID | S_ISGID)) &&
+            !(st->st_mode & (S_IXUSR | S_IXGRP | S_IXOTH))) {
+            printf(RED);
+        } else if (st->st_mode & (S_IXUSR | S_IXGRP | S_IXOTH)) {
+            printf(GREEN);
+        }
     }
     if (flag_l && S_ISLNK(st->st_mode)) {
         char link_path[PATH_MAX];
@@ -237,7 +252,7 @@ void list_dir(char* dir) {
     } else {
         qsort(entries, count, sizeof(struct dirent*), compare_name);
     }
-    char** arrs = malloc(count * sizeof(char*));
+    char** arrs = (char**)malloc(count * sizeof(char*));
     int arrs_count = 0;
     for (int i = 0; i < count; i++) {
         struct dirent* entry = entries[i];
