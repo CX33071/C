@@ -210,9 +210,14 @@ void print_file(char* full_path, struct dirent* entry, struct stat* st) {
         printf((st->st_mode & S_IXOTH) ? "x" : "-");
         printf("    %3ld    ", (long)st->st_nlink);
         struct passwd* pw = getpwuid(st->st_uid);
-        printf("%-8s    ", pw->pw_name);
+        char uid_buf[100];
+        snprintf(uid_buf, sizeof(uid_buf), "%d", st->st_uid);  
+        printf("%-8s    ",
+               pw ? pw->pw_name : uid_buf); 
         struct group* gr = getgrgid(st->st_gid);
-        printf("%8s ", gr->gr_name);
+        char gid_buf[100];
+        snprintf(gid_buf, sizeof(gid_buf), "%d", st->st_gid);
+        printf("%8s ", gr ? gr->gr_name : gid_buf);
         printf("%8ld ", (long)st->st_size);
         struct tm* tm = localtime(&st->st_mtime);
         char time_str[32];
