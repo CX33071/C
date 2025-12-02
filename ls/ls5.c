@@ -60,6 +60,9 @@ int youxianji(char* str) {
     char* ptr = str;
     while (*ptr == '.') {
         ptr++;
+        if (*ptr == '\0') {
+            return -1;
+        }
     }
     unsigned char first_byte = (unsigned char)*ptr;
     if (first_byte >= 0xE0 && first_byte <= 0xEF) {
